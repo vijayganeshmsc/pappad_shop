@@ -1,0 +1,288 @@
+/* -----------------------------------------------------
+   GLOBAL STYLES
+----------------------------------------------------- */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: url(/Papad.png);
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #fff;
+}
+
+/* -----------------------------------------------------
+   CARD CONTAINER
+----------------------------------------------------- */
+.card {
+  background: rgba(255, 255, 255, 0.12);
+  max-width: 440px;
+  width: 100%;
+  padding: 30px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(225, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* -----------------------------------------------------
+   HEADINGS & TEXT
+----------------------------------------------------- */
+.card h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 2.5rem;
+  font-weight: 1000;
+  text-align: center;
+  color: #ffd500;
+  margin-bottom: 8px;
+}
+
+.card p {
+  text-align: center;
+  color: #FFF3E0;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+/* -----------------------------------------------------
+   INPUT FIELD WRAPPER
+----------------------------------------------------- */
+.input-field {
+  position: relative;
+  margin: 25px 0;
+}
+
+/* Input box styles */
+.input-field .form-control {
+  width: 100%;
+  padding: 18px 16px 8px 22px;
+  font-size: 1rem;
+  color: #000000;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Floating label */
+.input-field label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: transparent;
+  padding: 0;
+}
+
+/* Label moves up when input focused */
+.input-field .form-control:focus + label {
+  top: -22px;
+  left: 5px;
+  font-size: 0.95rem;
+  color: #b90404;
+  font-weight: 600;
+  transform: translateY(0);
+}
+
+/* Label stays up when input has value */
+.input-field .form-control.has-value + label {
+  top: -22px;
+  left: 5px;
+  font-size: 0.95rem;
+  color: #b90404;
+  font-weight: 600;
+  transform: translateY(0);
+}
+
+/* Chrome/Edge/Safari autofill */
+.input-field .form-control:-webkit-autofill + label,
+.input-field .form-control:-webkit-autofill:hover + label,
+.input-field .form-control:-webkit-autofill:focus + label {
+  top: -22px;
+  left: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b90404;
+  transform: translateY(0);
+}
+
+/* Input focus effect */
+.input-field .form-control:focus {
+  border-color: #fdcb00;
+  box-shadow: 0 0 30px rgba(255, 209, 102, 10);
+}
+
+/* -----------------------------------------------------
+   BUTTON STYLES
+----------------------------------------------------- */
+.btn-register {
+  display: inline-block;
+  width: 100%;
+  padding: 14px;
+  font-weight: 800;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.2rem;
+  color: #b90404;
+  background: linear-gradient(135deg, #F3722C, #F8961E);
+  transition: 0.3s;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.btn-register:hover {
+  background: linear-gradient(135deg, #F8961E, #F3722C);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* -----------------------------------------------------
+   FORM FOOTER LINKS
+----------------------------------------------------- */
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.form-footer a {
+  font-weight: 600;
+  color: #ffd500;
+  margin-left: 3px;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* -----------------------------------------------------
+   MEDIA QUERIES
+----------------------------------------------------- */
+
+/* Small screens (mobile portrait) */
+@media (max-width: 576px) and (orientation: portrait) {
+  body {
+    padding: 15px;
+  }
+  .card {
+    padding: 25px 20px;
+    max-width: 100%;
+  }
+  .card h1 {
+    font-size: 1.8rem;
+  }
+  .card p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  .input-field {
+    margin: 20px 0;
+  }
+  .input-field .form-control {
+    padding: 16px 14px 8px 20px;
+    font-size: 0.95rem;
+  }
+  .btn-register {
+    padding: 12px;
+    font-size: 1.1rem;
+  }
+  .form-footer {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small screens (mobile landscape) */
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    padding: 10px;
+  }
+  .card {
+    padding: 20px 25px;
+    max-width: 100%;
+  }
+  .card h1 {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+  }
+  .card p {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+  .input-field {
+    margin: 15px 0;
+  }
+  .input-field .form-control {
+    padding: 14px 12px 6px 18px;
+    font-size: 0.9rem;
+  }
+  .btn-register {
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+  .form-footer {
+    font-size: 0.8rem;
+    margin-top: 15px;
+  }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 577px) and (max-width: 992px) {
+  .card {
+    max-width: 500px;
+    padding: 35px;
+  }
+  .card h1 {
+    font-size: 2.2rem;
+  }
+  .card p {
+    font-size: 1rem;
+  }
+  .input-field .form-control {
+    font-size: 1rem;
+  }
+  .btn-register {
+    font-size: 1.15rem;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 993px) {
+  .card {
+    max-width: 500px;
+    padding: 40px;
+  }
+  .card h1 {
+    font-size: 2.8rem;
+  }
+  .card p {
+    font-size: 1.1rem;
+    margin-bottom: 35px;
+  }
+  .input-field {
+    margin: 28px 0;
+  }
+  .input-field .form-control {
+    padding: 20px 18px 10px 28px;
+    font-size: 1.05rem;
+  }
+  .btn-register {
+    padding: 16px;
+    font-size: 1.25rem;
+  }
+  .form-footer {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="SignIn.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+     <div class="card">
+      <h1>Saravana & co papads</h1>
+      <p>Both retail and whole sale traders</p>
+      <form action="">
+        <div class="input-field mb-4">
+          <input name="foremail" id="foremail" type="email" class="form-control" required>
+          <label for="foremail" class="form-label">Email</label>
+        </div>
+        <div class="input-field mb-4">
+          <input name="forpassword" id="forpassword" type="password" class="form-control" required>
+          <label for="forpassword" class="form-label">Password</label>
+        </div>
+        <div class="mb-4">
+          <button type="submit" class="btn-register mt-3">Sign In</button>
+        </div>
+        <div class="form-footer text-white">
+          Don't have an account? <a href="/Register/Register.html">Register</a>
+        </div>
+      </form>
+    </div>
+    <script>
+      const inputs = document.querySelectorAll('.input-field .form-control');
+     
+      function checkInputValue(input) {
+        if (input.value.trim() !== '') {
+          input.classList.add('has-value');
+        } else {
+          input.classList.remove('has-value');
+        }
+      }
+     
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          checkInputValue(this);
+        });
+       
+        input.addEventListener('change', function() {
+          checkInputValue(this);
+        });
+       
+        input.addEventListener('focus', function() {
+          checkInputValue(this);
+        });
+       
+        checkInputValue(input);
+       
+        setTimeout(() => {
+          checkInputValue(input);
+        }, 100);
+      });
+     
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          inputs.forEach(input => {
+            checkInputValue(input);
+          });
+        }, 200);
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

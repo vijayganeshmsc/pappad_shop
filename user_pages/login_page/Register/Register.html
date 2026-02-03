@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Saravana & Co Papads | Register</title>
+
+    <!-- Bootstrap CSS -->
+    <link 
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+      rel="stylesheet" 
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+      crossorigin="anonymous"
+    >
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="Register.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" 
+      rel="stylesheet"
+    >
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Saravana & Co Papads</h1>
+      <p>Both retail and wholesale traders</p>
+
+      <form action="#">
+        <!-- Name -->
+        <div class="input-field mt-4">
+          <input name="forname" id="forname" type="text" class="form-control fs-5" required>
+          <label for="forname" class="form-label">Enter your name</label>
+        </div>
+
+        <!-- Email -->
+        <div class="input-field mb-3">
+          <input name="foremail" id="foremail" type="email" class="form-control fs-5" required>
+          <label for="foremail" class="form-label">Email</label>
+        </div>
+
+        <!-- Phone -->
+        <div class="input-field mb-3">
+          <input 
+            name="forphone" id="forphone" type="tel" 
+            inputmode="numeric"
+            pattern="[0-9]{10}" maxlength="10"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            class="form-control fs-5" required
+          >
+          <label for="forphone" class="form-label">Phone number</label>
+        </div>
+
+        <!-- Password -->
+        <div class="input-field mb-3">
+          <input name="forpassword" id="forpassword" type="password" class="form-control fs-5" required>
+          <label for="forpassword" class="form-label">Password</label>
+        </div>
+
+        <!-- Button -->
+        <div class="mb-4">
+          <button type="submit" class="btn-register mt-3">Register</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="form-footer text-white">
+          Already a member? <a href="/SignIn/SignIn.html">Sign In</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- JS: Floating Labels -->
+    <script>
+      const inputs = document.querySelectorAll('.input-field .form-control');
+
+      function checkInputValue(input) {
+        if (input.value.trim() !== '') input.classList.add('has-value');
+        else input.classList.remove('has-value');
+      }
+
+      inputs.forEach(input => {
+        input.addEventListener('input', () => checkInputValue(input));
+        input.addEventListener('change', () => checkInputValue(input));
+        input.addEventListener('focus', () => checkInputValue(input));
+        checkInputValue(input);
+        setTimeout(() => checkInputValue(input), 100);
+      });
+
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          inputs.forEach(input => checkInputValue(input));
+        }, 200);
+      });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous">
+    </script>
+  </body>
+</html>
