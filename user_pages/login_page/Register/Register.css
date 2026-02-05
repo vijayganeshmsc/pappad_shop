@@ -59,15 +59,16 @@ body {
 /* Input box styles */
 .input-field .form-control {
   width: 100%;
-  padding: 18px 16px 8px 22px;
+  padding: 20px 16px 10px 16px;
   font-size: 1rem;
   color: #000000;
-  font-weight: 500;
+  font-weight: 548;
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Floating label */
@@ -77,7 +78,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
+  font-size: 0.88rem;
   pointer-events: none;
   transition: all 0.3s ease;
   background: transparent;
@@ -88,7 +89,7 @@ body {
 .input-field .form-control:focus + label {
   top: -22px;
   left: 5px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #b90404;
   font-weight: 600;
   transform: translateY(0);
@@ -104,13 +105,31 @@ body {
   transform: translateY(0);
 }
 
-/* Chrome/Edge/Safari autofill */
+/* Chrome/Edge/Safari autofill - completely remove white background */
+.input-field .form-control:-webkit-autofill,
+.input-field .form-control:-webkit-autofill:hover,
+.input-field .form-control:-webkit-autofill:focus,
+.input-field .form-control:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 100px rgba(255, 255, 255, 0.1) inset !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-clip: content-box !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: background-color 0s !important;
+}
+
+/* Prevent blue highlight on autofill click */
+.input-field .form-control:-webkit-autofill::first-line {
+  color: #000000 !important;
+}
+
 .input-field .form-control:-webkit-autofill + label,
 .input-field .form-control:-webkit-autofill:hover + label,
-.input-field .form-control:-webkit-autofill:focus + label {
+.input-field .form-control:-webkit-autofill:focus + label,
+.input-field .form-control:-webkit-autofill:active + label {
   top: -22px;
-  left: 12px;
-  font-size: 0.85rem;
+  left: 5px;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #b90404;
   transform: translateY(0);
@@ -120,6 +139,19 @@ body {
 .input-field .form-control:focus {
   border-color: #fdcb00;
   box-shadow: 0 0 30px rgba(255, 209, 102, 10);
+  background: rgba(255, 255, 255, 0.2) !important;
+  outline: none !important;
+}
+
+/* Remove blue selection background */
+.input-field .form-control::selection {
+  background: rgba(253, 203, 0, 0.3);
+  color: #000000;
+}
+
+.input-field .form-control::-moz-selection {
+  background: rgba(253, 203, 0, 0.3);
+  color: #000000;
 }
 
 /* -----------------------------------------------------
@@ -191,7 +223,10 @@ body {
     margin: 20px 0;
   }
   .input-field .form-control {
-    padding: 16px 14px 8px 20px;
+    padding: 18px 14px 8px 14px;
+    font-size: 1rem;
+  }
+  .input-field label {
     font-size: 0.95rem;
   }
   .btn-register {
@@ -224,7 +259,10 @@ body {
     margin: 15px 0;
   }
   .input-field .form-control {
-    padding: 14px 12px 6px 18px;
+    padding: 16px 12px 6px 12px;
+    font-size: 0.95rem;
+  }
+  .input-field label {
     font-size: 0.9rem;
   }
   .btn-register {
@@ -251,7 +289,11 @@ body {
     font-size: 1rem;
   }
   .input-field .form-control {
-    font-size: 1rem;
+    padding: 19px 16px 9px 16px;
+    font-size: 1.1rem;
+  }
+  .input-field label {
+    font-size: 1.02rem;
   }
   .btn-register {
     font-size: 1.15rem;
@@ -275,8 +317,11 @@ body {
     margin: 28px 0;
   }
   .input-field .form-control {
-    padding: 20px 18px 10px 28px;
-    font-size: 1.05rem;
+    padding: 22px 18px 12px 18px;
+    font-size: 1.2rem;
+  }
+  .input-field label {
+    font-size: 1.1rem;
   }
   .btn-register {
     padding: 16px;
