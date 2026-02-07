@@ -3,9 +3,9 @@
 ----------------------------------------------------- */
 body {
   font-family: 'Montserrat', sans-serif;
-  background: url(../Papad.png);
-   backdrop-filter: blur(3px);
-  filter: brightness(0.98);
+  background: url(/admin_pages/admin_login_page/Papad.png);
+   backdrop-filter: blur(5px);
+  filter: brightness(0.85);
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -27,7 +27,7 @@ body {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(225, 255, 255, 0.15);
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 

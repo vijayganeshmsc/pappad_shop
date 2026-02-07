@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Saravana & Co Papads | Register</title>
+    <title>Saravana & Co Papads | Admin Login</title>
 
     <!-- Bootstrap CSS -->
     <link 
@@ -14,7 +14,7 @@
     >
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="Register.css">
+    <link rel="stylesheet" href="admin-login.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,34 +28,11 @@
   <body>
     <div class="card">
       <h1>Saravana & Co Papads</h1>
-      <p>Both retail and wholesale traders</p>
+      <p>Admin portal</p>
 
-      <form action="../SignIn/SignIn.html">
-        <!-- Name -->
-        <div class="input-field mt-4">
-          <input name="forname" id="forname" type="text" class="form-control fs-5" required >
-          <label for="forname" class="form-label">Enter your name</label>
-        </div>
-
-        <!-- Phone -->
-        <div class="input-field mb-3">
-          <input 
-            name="forphone" id="forphone" type="tel" 
-            inputmode="numeric"
-            pattern="[0-9]{10}" maxlength="10"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-            class="form-control fs-5" required
-          >
-          <label for="forphone" class="form-label">Phone number</label>
-        </div>
-
-        <!-- Address -->
-        <div class="input-field mb-3">
-          <input name="foraddress" id="foraddress" type="text" class="form-control fs-5" required>
-          <label for="foraddress" class="form-label">Address</label>
-        </div>
+      <form action="">
         <!-- Email -->
-        <div class="input-field mb-3">
+        <div class="input-field mt-4">
           <input name="foremail" id="foremail" type="email" class="form-control fs-5" required>
           <label for="foremail" class="form-label">Email</label>
         </div>
@@ -66,14 +43,21 @@
           <label for="forpassword" class="form-label">Password</label>
         </div>
 
+        <!-- Security Notice -->
+        <div class="security-notice">
+          🔒 Access restricted to authorized administrators only.
+        </div>
+
         <!-- Button -->
         <div class="mb-4">
-          <button type="submit" class="btn-register mt-3">Register</button>
+          <button type="submit" class="btn-register mt-3">Login</button>
         </div>
 
         <!-- Footer -->
         <div class="form-footer text-white">
-          Already a member? <a href="../SignIn/SignIn.html">Sign In</a>
+          Does not save a information? <a href="/admin_pages/admin_login_page/Admin-register/admin-login.html">Register here</a>
+          <br>
+          <a href="#" class="forget">Forgot password?</a>
         </div>
       </form>
     </div>

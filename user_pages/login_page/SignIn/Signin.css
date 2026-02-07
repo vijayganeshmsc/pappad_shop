@@ -1,6 +1,11 @@
+/* -----------------------------------------------------
+     GLOBAL STYLES
+----------------------------------------------------- */
 body {
     font-family: 'Montserrat', sans-serif;
     background: url(../Papad.png);
+    backdrop-filter: blur(3px);
+    filter: brightness(0.98);
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -11,6 +16,9 @@ body {
     color: #fff;
 }
 
+/* -----------------------------------------------------
+     CARD CONTAINER
+----------------------------------------------------- */
 .card {
     background: rgba(255, 255, 255, 0.12);
     max-width: 440px;
@@ -23,6 +31,9 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
+/* -----------------------------------------------------
+     HEADINGS & TEXT
+----------------------------------------------------- */
 .card h1 {
     font-family: "Dancing Script", cursive;
     font-size: 2.5rem;
@@ -39,42 +50,56 @@ body {
     margin-bottom: 30px;
 }
 
+/* -----------------------------------------------------
+     INPUT FIELD WRAPPER
+----------------------------------------------------- */
 .input-field {
     position: relative;
     margin: 25px 0;
 }
 
+/* Input box styles */
 .input-field .form-control {
     width: 100%;
-    padding: 18px 16px 8px 25px;
+    padding: 20px 16px 10px 16px;
     font-size: 1rem;
-    color: #000000;
-    font-weight: 540;
+    color: #ffffff;
+    font-weight: 548;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* --- The Floating Label Logic: Initial Position --- */
+/* Floating label */
 .input-field label {
     position: absolute;
     left: 16px;
-    top: 45%; /* Adjusted for better alignment */
+    top: 50%;
     transform: translateY(-50%);
     color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
+    font-size: 0.88rem;
     pointer-events: none;
-    transition: all 0.3s ease; /* The animation transition! */
+    transition: all 0.3s ease;
     background: transparent;
     padding: 0;
 }
 
-/* --- The Floating Label Logic: Focused or Has Value (Moves Up) --- */
-.input-field .form-control:focus + label,
+/* Label moves up when input focused */
+.input-field .form-control:focus + label {
+    top: -22px;
+    left: 5px;
+    font-size: 1rem;
+    color: #b90404;
+    font-weight: 600;
+    transform: translateY(0);
+}
+
+/* Label stays up when input has value */
 .input-field .form-control.has-value + label {
-    top: -22px; /* The label floats up above the input */
+    top: -22px;
     left: 5px;
     font-size: 0.95rem;
     color: #b90404;
@@ -82,23 +107,52 @@ body {
     transform: translateY(0);
 }
 
-/* --- The Floating Label Logic: Webkit Autofill (Moves Up) --- */
+/* Chrome/Edge/Safari autofill - completely remove white background */
+.input-field .form-control:-webkit-autofill,
+.input-field .form-control:-webkit-autofill:hover,
+.input-field .form-control:-webkit-autofill:focus,
+.input-field .form-control:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.15) inset !important;
+    box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.15) inset !important;
+
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff;
+
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+
+
 .input-field .form-control:-webkit-autofill + label,
 .input-field .form-control:-webkit-autofill:hover + label,
-.input-field .form-control:-webkit-autofill:focus + label {
+.input-field .form-control:-webkit-autofill:focus + label,
+.input-field .form-control:-webkit-autofill:active + label {
     top: -22px;
-    left: 12px;
-    font-size: 0.85rem;
+    left: 5px;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: #b90404; /* Consistent color for autofill */
+    color: #b90404;
     transform: translateY(0);
 }
 
+/* Input focus effect */
 .input-field .form-control:focus {
     border-color: #fdcb00;
     box-shadow: 0 0 30px rgba(255, 209, 102, 10);
+    background: rgba(255, 255, 255, 0.2) !important;
+    outline: none !important;
 }
 
+
+
+.input-field .form-control::-moz-selection {
+    background: rgba(253, 203, 0, 0.3);
+    color: #000000;
+}
+
+/* -----------------------------------------------------
+     BUTTON STYLES
+----------------------------------------------------- */
 .btn-register {
     display: inline-block;
     width: 100%;
@@ -120,6 +174,9 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
+/* -----------------------------------------------------
+     FORM FOOTER LINKS
+----------------------------------------------------- */
 .form-footer {
     text-align: center;
     margin-top: 20px;
@@ -138,6 +195,11 @@ body {
     text-decoration: underline;
 }
 
+/* -----------------------------------------------------
+     MEDIA QUERIES
+----------------------------------------------------- */
+
+/* Small screens (mobile portrait) */
 @media (max-width: 576px) and (orientation: portrait) {
     body {
         padding: 15px;
@@ -157,7 +219,10 @@ body {
         margin: 20px 0;
     }
     .input-field .form-control {
-        padding: 16px 14px 8px 20px;
+        padding: 18px 14px 8px 14px;
+        font-size: 1rem;
+    }
+    .input-field label {
         font-size: 0.95rem;
     }
     .btn-register {
@@ -169,6 +234,7 @@ body {
     }
 }
 
+/* Small screens (mobile landscape) */
 @media (max-width: 900px) and (orientation: landscape) {
     body {
         padding: 10px;
@@ -189,7 +255,10 @@ body {
         margin: 15px 0;
     }
     .input-field .form-control {
-        padding: 14px 12px 6px 18px;
+        padding: 16px 12px 6px 12px;
+        font-size: 0.95rem;
+    }
+    .input-field label {
         font-size: 0.9rem;
     }
     .btn-register {
@@ -203,6 +272,7 @@ body {
     }
 }
 
+/* Medium screens (tablets) */
 @media (min-width: 577px) and (max-width: 992px) {
     .card {
         max-width: 500px;
@@ -215,13 +285,18 @@ body {
         font-size: 1rem;
     }
     .input-field .form-control {
-        font-size: 1rem;
+        padding: 19px 16px 9px 16px;
+        font-size: 1.1rem;
+    }
+    .input-field label {
+        font-size: 1.02rem;
     }
     .btn-register {
         font-size: 1.15rem;
     }
 }
 
+/* Large screens (desktops) */
 @media (min-width: 993px) {
     .card {
         max-width: 500px;
@@ -238,8 +313,11 @@ body {
         margin: 28px 0;
     }
     .input-field .form-control {
-        padding: 20px 18px 10px 28px;
-        font-size: 1.05rem;
+        padding: 22px 18px 12px 18px;
+        font-size: 1.2rem;
+    }
+    .input-field label {
+        font-size: 1.1rem;
     }
     .btn-register {
         padding: 16px;

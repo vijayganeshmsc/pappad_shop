@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Saravana & Co Papads | Register</title>
+    <title>Saravana & Co Papads | Admin Login</title>
 
     <!-- Bootstrap CSS -->
     <link 
@@ -14,7 +14,7 @@
     >
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="Register.css">
+    <link rel="stylesheet" href="admin-login.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
   <body>
     <div class="card">
       <h1>Saravana & Co Papads</h1>
-      <p>Both retail and wholesale traders</p>
+      <p>Admin portal</p>
 
       <form action="../SignIn/SignIn.html">
         <!-- Name -->
@@ -49,11 +49,8 @@
           <label for="forphone" class="form-label">Phone number</label>
         </div>
 
-        <!-- Address -->
-        <div class="input-field mb-3">
-          <input name="foraddress" id="foraddress" type="text" class="form-control fs-5" required>
-          <label for="foraddress" class="form-label">Address</label>
-        </div>
+        
+
         <!-- Email -->
         <div class="input-field mb-3">
           <input name="foremail" id="foremail" type="email" class="form-control fs-5" required>
@@ -63,17 +60,17 @@
         <!-- Password -->
         <div class="input-field mb-3">
           <input name="forpassword" id="forpassword" type="password" class="form-control fs-5" required>
-          <label for="forpassword" class="form-label">Password</label>
+          <label for="forpassword" class="form-label">Create a password</label>
         </div>
 
         <!-- Button -->
         <div class="mb-4">
-          <button type="submit" class="btn-register mt-3">Register</button>
+          <button type="submit" class="btn-register mt-3">Save information</button>
         </div>
 
         <!-- Footer -->
         <div class="form-footer text-white">
-          Already a member? <a href="../SignIn/SignIn.html">Sign In</a>
+          Already saved? <a href="/admin_pages/admin_login_page/Admin-login/admin-login.html">Login here</a>
         </div>
       </form>
     </div>
