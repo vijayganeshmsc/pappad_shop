@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saravana & Co Papads | Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="logo">
+            <h1>Saravana & Co Papads</h1>
+        </div>
+        <div class="admin-info">
+            <span>Welcome, Admin</span>
+            <button class="btn-logout">Logout</button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <ul>
+            <li class="active"><a href="#">Dashboard</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Inventory</a></li>
+            <li><a href="#">Customers</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <!-- Metrics Cards -->
+            <div class="row metrics-row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="metric-card">
+                        <h3>Total Sales</h3>
+                        <p class="metric-value">$12,345</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="metric-card">
+                        <h3>Total Orders</h3>
+                        <p class="metric-value">1,234</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="metric-card">
+                        <h3>Total Customers</h3>
+                        <p class="metric-value">567</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="metric-card">
+                        <h3>Total Revenue</h3>
+                        <p class="metric-value">$45,678</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row charts-row">
+                <div class="col-lg-8">
+                    <div class="chart-card">
+                        <h3>Sales Trend</h3>
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-card">
+                        <h3>Order Status</h3>
+                        <canvas id="orderStatusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders and Alerts -->
+            <div class="row bottom-row">
+                <div class="col-lg-8">
+                    <div class="table-card">
+                        <h3>Recent Orders</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#12345</td>
+                                    <td>John Doe</td>
+                                    <td>Pending</td>
+                                    <td>$50.00</td>
+                                    <td><button class="btn-action">View Order</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#12346</td>
+                                    <td>Jane Smith</td>
+                                    <td>Shipped</td>
+                                    <td>$75.00</td>
+                                    <td><button class="btn-action">View Order</button></td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="alerts-card">
+                        <h3>Low Stock Alerts</h3>
+                        <ul>
+                            <li>Plain Papad - 5 left</li>
+                            <li>Masala Papad - 3 left</li>
+                            <li>Spicy Papad - 2 left</li>
+                        </ul>
+                        <button class="btn-action">Add Stock</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="btn-quick">Add Product</button>
+                <button class="btn-quick">View All Orders</button>
+                <button class="btn-quick">Generate Report</button>
+                <button class="btn-quick" id="refreshBtn">Refresh</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
