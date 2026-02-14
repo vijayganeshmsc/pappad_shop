@@ -5,7 +5,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   background: url(../Papad.png);
   backdrop-filter: blur(5px);
-  filter: brightness(0.85);
+  filter: brightness(0.98);
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -39,7 +39,7 @@ body {
   font-size: 2.5rem;
   font-weight: 1000;
   text-align: center;
-  color: #ffd500;
+  color: #fdcb00;
   margin-bottom: 8px;
 }
 
@@ -199,7 +199,7 @@ body {
 
 .form-footer a {
   font-weight: 600;
-  color: #ffd500;
+  color: #fdcb00;
   margin-left: 3px;
   text-decoration: none;
 }
@@ -327,7 +327,7 @@ body {
     margin: 28px 0;
   }
   .input-field .form-control {
-    padding: 22px 18px 12px 18px;
+    padding: 20px 16px 10px 16px;
     font-size: 1.2rem;
   }
   .input-field label {
