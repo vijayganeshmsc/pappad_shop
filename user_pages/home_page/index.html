@@ -13,6 +13,160 @@
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Page Specific Styles -->
+    <style>
+        /* Custom Header Styles for Home Page */
+        .announcement-bar {
+            display: none !important; /* Hide announcement bar */
+        }
+
+        /* Default Header Styles (Orange Gradient) */
+        .header {
+            background: linear-gradient(to right, #f3722c, #f8961e) !important; /* Orange Gradient matching features */
+            backdrop-filter: none;
+            border-bottom: none !important; /* Remove White Line */
+            box-shadow: none !important; /* Remove initial shadow if causing line */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #ffffff !important; /* White text */
+        }
+        
+        /* Links and Icons inherit color */
+        .header-nav-link, 
+        .header-icon-btn,
+        .header-search-icon,
+        .header-logo-text h2,
+        .header-logo-text p {
+            color: inherit !important; 
+        }
+
+        /* Scrolled Down (Hidden) */
+        .header--hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Scrolled Up (Sticky) */
+        .header--visible-bg {
+            background: linear-gradient(to right, #f3722c, #f8961e) !important; /* Keep Orange Gradient */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-bottom: none !important; /* Ensure no line */
+            color: #ffffff !important;
+        }
+        
+        /* Ensure Logo Title is readable */
+        .header--visible-bg .header-logo-text h2 {
+            color: #ffffff !important; /* White logo text */
+        }
+
+        /* Full Width Container Override */
+        .header .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .header-container {
+            padding-top: 0.5rem !important; /* Reduced Padding - Slimmer Header */
+            padding-bottom: 0.5rem !important;
+            transition: padding 0.3s ease;
+            max-width: 100% !important;
+            padding-left: 1rem !important; /* Minimal side padding */
+            padding-right: 1rem !important;
+            justify-content: space-between; /* Ensure space between items */
+        }
+
+        /* Maintain slim padding */
+        .header--visible-bg .header-container {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+        
+        /* Logo Size - Slightly adjusted for slimmer header */
+        .header-logo-text h2 {
+            font-size: 1.4rem !important; 
+        }
+        
+        .header-logo-text p {
+            font-size: 0.7rem !important; 
+        }
+
+        /* Button Styles (Large Text) */
+        .header-nav-link, 
+        .header-icon-btn {
+            color: #ffca28 !important; /* Dark Yellow/Amber */
+            font-weight: 800; /* Extra Bold */
+            font-size: 1.1rem; /* Larger Text */
+            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Hover Effects - Icons (Glow/Scale) - Fixed */
+        .header-nav-link:hover {
+             /* Keep text outline for links if desired, or switch to glow */
+             color: transparent !important;
+            -webkit-text-stroke: 1px #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        .header-icon-btn:hover {
+            color: #ffffff !important; /* White Icon */
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)); /* Glow Effect */
+            transform: scale(1.2); /* Scale Effect */
+            -webkit-text-stroke: 0; /* No text stroke for icons */
+        }
+
+        /* Search Bar Styles - Theme Gradient */
+        .header-search-input {
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+            background: linear-gradient(to right, #ffecb3, #ffca28) !important; /* Light Theme Gradient */
+            color: #000000 !important; /* Dark Text for readiness on light bg */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            border-radius: 9999px;
+            padding-left: 2.5rem; /* Space for icon */
+        }
+        
+        .header-search-input::placeholder {
+             color: rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Ensure Search is ALWAYS Visible (removed display:none) */
+        .header--visible-bg .header-search {
+            display: block !important;
+        }
+
+        /* Styles for New Action Buttons (Login/Profile) */
+        .header-action-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 0.5rem 1.2rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-action-btn:hover {
+            background-color: #ffffff;
+            color: #e65100 !important; /* Deep Orange Text on Hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -80,21 +234,19 @@
 
                 <!-- Icons -->
                 <div class="header-actions">
-                    <!-- Search Icon - Mobile -->
-                    <button class="header-icon-btn header-search-mobile" aria-label="Search">
+                    <!-- New Action Buttons -->
+                    <a href="../login_page/Register/Register.html" class="header-action-btn" id="loginBtn">
+                        Login
+                    </a>
+                    
+                    <a href="#" class="header-icon-btn" id="profileBtn" aria-label="Profile Dashboard" style="display: none;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
                         </svg>
-                    </button>
-
-                    <!-- User Icon -->
-                    <button class="header-icon-btn" aria-label="User account">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                    </button>
+                    </a>
 
                     <!-- Cart Icon -->
                     <button class="header-icon-btn header-cart" aria-label="Shopping cart">

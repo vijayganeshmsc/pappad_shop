@@ -30,7 +30,7 @@
       <h1>Saravana & Co Papads</h1>
       <p>Both retail and wholesale traders</p>
 
-      <form action="../SignIn/SignIn.html">
+      <form id="registerForm">
         <!-- Name -->
         <div class="input-field mt-4">
           <input name="forname" id="forname" type="text" class="form-control fs-5" required >
@@ -78,7 +78,7 @@
       </form>
     </div>
 
-    <!-- JS: Floating Labels -->
+    <!-- JS: Floating Labels & Signup Logic -->
     <script>
       const inputs = document.querySelectorAll('.input-field .form-control');
 
@@ -99,6 +99,20 @@
         setTimeout(() => {
           inputs.forEach(input => checkInputValue(input));
         }, 200);
+      });
+
+      // Handle Registration
+      document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        
+        // Simulating Registration Success
+        // In a real app, you would send data to a server here.
+        
+        // Set Login State
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // Redirect to Home Page
+        window.location.href = '../../home_page/index.html';
       });
     </script>
 
