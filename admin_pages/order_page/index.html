@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saravana & Co Papads | Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;548;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../admin_dashboard/styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="orders-page">
+    
+    <header class="admin-header">
+        <div class="logo"><h1>Saravana & Co Papads</h1></div>
+        <div class="admin-info">
+            <span>Welcome, Admin</span>
+            <button class="btn-logout">Logout</button>
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
+            <li><a href="../product_management_page/index.html">Products</a></li>
+            <li class="active"><a href="index.html">Orders</a></li>
+            <li><a href="../inventory_page/index.html">Inventory</a></li>
+            <li><a href="../customers_page/index.html">Customers</a></li>
+            <li><a href="../reports_page/index.html">Reports</a></li>
+            <li><a href="../settings_page/index.html">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content container-fluid">
+        <div class="orders-header d-flex justify-content-between align-items-center">
+            <div>
+                <h2>Orders</h2>
+                <p class="muted">Manage recent orders, update status and view details</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn-ghost" id="refreshOrders">Refresh</button>
+                <button class="btn-primary" id="newOrderBtn">Create Order</button>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-lg-8">
+                <div class="card card-panel">
+                    <div class="card-body p-3">
+                        <table class="table orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTbody">
+                                <!-- rows inserted by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-panel">
+                    <div class="card-body p-3">
+                        <h5>Order Details</h5>
+                        <div id="orderDetails">
+                            <p class="muted">Select an order to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../admin_dashboard/nav.js"></script>
+</body>
+</html>

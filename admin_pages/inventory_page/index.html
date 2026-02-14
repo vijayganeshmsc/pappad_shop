@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saravana & Co Papads | Inventory</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;548;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../admin_dashboard/styles.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="logo"><h1>Saravana & Co Papads</h1></div>
+    <div class="admin-info"><span>Welcome, Admin</span><button class="btn-logout">Logout</button></div>
+  </header>
+
+  <nav class="sidebar">
+    <ul>
+      <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
+      <li><a href="../product_management_page/index.html">Products</a></li>
+      <li><a href="../order_page/index.html">Orders</a></li>
+      <li class="active"><a href="index.html">Inventory</a></li>
+      <li><a href="../customers_page/index.html">Customers</a></li>
+      <li><a href="../reports_page/index.html">Reports</a></li>
+      <li><a href="../settings_page/index.html">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h1 class="page-title">Inventory</h1>
+          <p class="muted">Overview of product stock levels and quick restock actions.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <input type="search" class="form-control" id="inventorySearch" placeholder="Search products" style="min-width:220px">
+          <button class="btn-primary" id="addStockBtn">Add Stock</button>
+        </div>
+      </div>
+
+      <div class="card card-panel">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table mt-3 inventory-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>SKU</th>
+                  <th>Stock</th>
+                  <th>Threshold</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTbody">
+                <tr>
+                  <td>Plain Papad</td>
+                  <td>PP-001</td>
+                  <td><span class="badge bg-warning text-dark">5</span></td>
+                  <td>10</td>
+                  <td><button class="btn-action" data-sku="PP-001">Restock</button></td>
+                </tr>
+                <tr>
+                  <td>Masala Papad</td>
+                  <td>MP-002</td>
+                  <td><span class="badge bg-danger">3</span></td>
+                  <td>8</td>
+                  <td><button class="btn-action" data-sku="MP-002">Restock</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Restock Modal -->
+  <div class="modal fade" id="restockModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content card-panel">
+        <div class="modal-body">
+          <h5 class="mb-3">Restock Item</h5>
+          <form id="restockForm">
+            <div class="mb-3">
+              <label class="form-label">SKU</label>
+              <input class="form-control" id="restockSku" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Quantity</label>
+              <input class="form-control" id="restockQty" type="number" min="1" value="10">
+            </div>
+            <button class="btn-primary w-100" type="submit">Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../order_page/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin_dashboard/nav.js"></script>
+  <script>
+    // Basic interactivity for inventory page
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const restockModal = new bootstrap.Modal(document.getElementById('restockModal'));
+      document.querySelectorAll('.btn-action[data-sku]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const sku = btn.dataset.sku;
+          document.getElementById('restockSku').value = sku;
+          restockModal.show();
+        });
+      });
+
+      document.getElementById('restockForm').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const sku = document.getElementById('restockSku').value;
+        const qty = parseInt(document.getElementById('restockQty').value,10)||0;
+        // basic UI update: find row and increase stock badge
+        const rows = document.querySelectorAll('#inventoryTbody tr');
+        rows.forEach(r=>{
+          if(r.querySelector('td:nth-child(2)').textContent.trim()===sku){
+            const badge = r.querySelector('td:nth-child(3) .badge');
+            let current = parseInt(badge.textContent.trim(),10)||0;
+            badge.textContent = current + qty;
+            restockModal.hide();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

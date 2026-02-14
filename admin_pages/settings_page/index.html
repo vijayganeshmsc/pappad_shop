@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saravana & Co Papads | Settings</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;548;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../admin_dashboard/styles.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="logo"><h1>Saravana & Co Papads</h1></div>
+    <div class="admin-info"><span>Welcome, Admin</span><button class="btn-logout">Logout</button></div>
+  </header>
+
+  <nav class="sidebar">
+    <ul>
+      <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
+      <li><a href="../product_management_page/index.html">Products</a></li>
+      <li><a href="../order_page/index.html">Orders</a></li>
+      <li><a href="../inventory_page/index.html">Inventory</a></li>
+      <li><a href="../customers_page/index.html">Customers</a></li>
+      <li><a href="../reports_page/index.html">Reports</a></li>
+      <li class="active"><a href="index.html">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-fluid">
+      <div class="card card-panel">
+        <div class="card-body">
+          <h2 class="card-title">Settings</h2>
+          <p class="muted">Manage store preferences and admin account settings.</p>
+          <form class="mt-3">
+            <div class="mb-3">
+              <label class="form-label">Store Name</label>
+              <input class="form-control" value="Saravana & Co Papads">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contact Email</label>
+              <input class="form-control" value="support@saravana.com">
+            </div>
+            <button class="btn-primary w-100">Save Settings</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../order_page/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin_dashboard/nav.js"></script>
+</body>
+</html>

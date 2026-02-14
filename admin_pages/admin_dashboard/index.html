@@ -32,7 +32,7 @@
         <ul>
             <li class="active"><a href="index.html">Dashboard</a></li>
             <li><a href="../product_management_page/index.html">Products</a></li>
-            <li><a href="#">Orders</a></li>
+            <li><a href="../order_page/index.html">Orders</a></li>
             <li><a href="#">Inventory</a></li>
             <li><a href="#">Customers</a></li>
             <li><a href="#">Reports</a></li>
@@ -108,14 +108,14 @@
                                     <td>John Doe</td>
                                     <td>Pending</td>
                                     <td>$50.00</td>
-                                    <td><button class="btn-action">View Order</button></td>
+                                    <td><button class="btn-action" onclick="window.location.href='../order_page/index.html?order=12345'">View Order</button></td>
                                 </tr>
                                 <tr>
                                     <td>#12346</td>
                                     <td>Jane Smith</td>
                                     <td>Shipped</td>
                                     <td>$75.00</td>
-                                    <td><button class="btn-action">View Order</button></td>
+                                    <td><button class="btn-action" onclick="window.location.href='../order_page/index.html?order=12346'">View Order</button></td>
                                 </tr>
                                 <!-- Add more rows as needed -->
                             </tbody>
@@ -138,7 +138,7 @@
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <button class="btn-quick" onclick="window.location.href='../product_management_page/index.html'">Add Product</button>
-                <button class="btn-quick">View All Orders</button>
+                <button class="btn-quick" onclick="window.location.href='../order_page/index.html'">View All Orders</button>
                 <button class="btn-quick">Generate Report</button>
                 <button class="btn-quick" id="refreshBtn">Refresh</button>
             </div>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saravana & Co Papads | Reports</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;548;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../admin_dashboard/styles.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="logo"><h1>Saravana & Co Papads</h1></div>
+    <div class="admin-info"><span>Welcome, Admin</span><button class="btn-logout">Logout</button></div>
+  </header>
+
+  <nav class="sidebar">
+    <ul>
+      <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
+      <li><a href="../product_management_page/index.html">Products</a></li>
+      <li><a href="../order_page/index.html">Orders</a></li>
+      <li><a href="../inventory_page/index.html">Inventory</a></li>
+      <li><a href="../customers_page/index.html">Customers</a></li>
+      <li class="active"><a href="index.html">Reports</a></li>
+      <li><a href="../settings_page/index.html">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="container-fluid">
+      <div class="card card-panel">
+        <div class="card-body">
+          <h2 class="card-title">Reports</h2>
+          <p class="muted">Generate sales, inventory and customer reports.</p>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <button class="btn-primary w-100 mb-2">Monthly Revenue</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn-primary w-100 mb-2">Daily Sales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../order_page/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin_dashboard/nav.js"></script>
+</body>
+</html>
