@@ -107,16 +107,81 @@
       document.getElementById('registerForm').addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent default form submission
         
-        // Simulating Registration Success
-        // In a real app, you would send data to a server here.
+        // Get form values
+        const name = document.getElementById('forname').value;
+        const phone = document.getElementById('forphone').value;
+        const address = document.getElementById('foraddress').value;
+        const email = document.getElementById('foremail').value;
+        const password = document.getElementById('forpassword').value;
         
-        // Set Login State
-        localStorage.setItem('isLoggedIn', 'true');
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         
-        // Redirect to Home Page
-        window.location.href = '../../home_page/index.html';
+        // Create user with Firebase
+        auth.createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // User created successfully
+            const user = userCredential.user;
+            
+            // Update user profile with display name
+            return user.updateProfile({
+              displayName: name
+            });
+          })
+          .then(() => {
+            // Store additional user data (you can use Firebase Firestore later)
+            const userData = {
+              name: name,
+              phone: phone,
+              address: address,
+              email: email
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Set login state
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            
+            // Show success message
+            alert('Registration successful! Redirecting to home page...');
+            
+            // Redirect to Home Page
+            window.location.href = '../../home_page/index.html';
+          })
+          .catch((error) => {
+            // Handle errors
+            let errorMessage = 'Registration failed. Please try again.';
+            
+            switch(error.code) {
+              case 'auth/email-already-in-use':
+                errorMessage = 'This email is already registered. Please sign in instead.';
+                break;
+              case 'auth/weak-password':
+                errorMessage = 'Password should be at least 6 characters long.';
+                break;
+              case 'auth/invalid-email':
+                errorMessage = 'Please enter a valid email address.';
+                break;
+              case 'auth/network-request-failed':
+                errorMessage = 'Network error. Please check your connection.';
+                break;
+              default:
+                errorMessage = error.message;
+            }
+            
+            alert(errorMessage);
+            console.error('Registration error:', error);
+          });
       });
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="../home_page/js/firebase-config.js"></script>
 
     <!-- Bootstrap JS -->
     <script 
