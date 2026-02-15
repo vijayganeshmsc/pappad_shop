@@ -90,7 +90,21 @@ export function initHeader() {
 
     if (isLoggedIn) {
       if (loginBtn) loginBtn.style.display = 'none';
-      if (profileBtn) profileBtn.style.display = 'inline-flex'; // or block/inline-block
+      if (profileBtn) {
+        profileBtn.style.display = 'inline-flex';
+        // Remove existing event listener to prevent duplicates
+        profileBtn.replaceWith(profileBtn.cloneNode(true));
+        const newProfileBtn = document.getElementById('profileBtn');
+        // Add logout functionality
+        newProfileBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (confirm('Do you want to logout?')) {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            checkLoginState(); // Update UI immediately
+          }
+        });
+      }
     } else {
       if (loginBtn) loginBtn.style.display = 'inline-block';
       if (profileBtn) profileBtn.style.display = 'none';
@@ -102,4 +116,7 @@ export function initHeader() {
 
   // Listen for storage changes (in case login happens in another tab/window)
   window.addEventListener('storage', checkLoginState);
+  
+  // Also check login state when page becomes visible (for tab switching)
+  document.addEventListener('visibilitychange', checkLoginState);
 }

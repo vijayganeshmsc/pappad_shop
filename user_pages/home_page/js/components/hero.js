@@ -42,7 +42,7 @@ export function initHero() {
 
     // Auto play
     function startAutoPlay() {
-        autoPlayInterval = setInterval(nextSlide, 5000);
+        autoPlayInterval = setInterval(nextSlide, 3000);
     }
 
     function stopAutoPlay() {
