@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Access Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        .test-link { display: inline-block; margin: 10px; padding: 10px 20px; background: #f3722c; color: white; text-decoration: none; border-radius: 5px; }
+        .test-link:hover { background: #f8961e; }
+    </style>
+</head>
+<body>
+    <h1>Direct File Access Test</h1>
+    
+    <div class="test-result">
+        <h2>Testing Direct File Access</h2>
+        <p>Checking if files can be accessed directly...</p>
+        <div id="direct-test">Testing...</div>
+    </div>
+    
+    <div class="test-result">
+        <h2>Test Navigation from Home Page</h2>
+        <p>Click the link below to test navigation:</p>
+        <a href="http://localhost:8000/user_pages/login_page/Register/Register.html" class="test-link">Test Sign Up Navigation</a>
+        
+        <br><br>
+        
+        <h2>Manual File Tests</h2>
+        <a href="http://localhost:8000/user_pages/login_page/Register/Register.html" class="test-link">Open Register Page Directly</a><br>
+        <a href="http://localhost:8000/user_pages/login_page/SignIn/SignIn.html" class="test-link">Open Sign In Page Directly</a>
+    </div>
+
+    <script>
+        // Test direct file access
+        async function testFileAccess() {
+            try {
+                const response = await fetch('http://localhost:8000/user_pages/login_page/Register/Register.html');
+                if (response.ok) {
+                    document.getElementById('direct-test').innerHTML = '<span class="success">✅ Register page accessible directly</span>';
+                } else {
+                    document.getElementById('direct-test').innerHTML = '<span class="error">❌ Register page not accessible directly: ' + response.status + '</span>';
+                }
+            } catch (error) {
+                document.getElementById('direct-test').innerHTML = '<span class="error">❌ Error testing file access: ' + error.message + '</span>';
+            }
+        }
+        
+        testFileAccess();
+    </script>
+</body>
+</html>

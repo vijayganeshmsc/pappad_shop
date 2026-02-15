@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Auth Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Firebase Authentication Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Firebase Configuration Test</h2>
+        <div id="config-status">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Auth Service Test</h2>
+        <div id="auth-status">Loading...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Current User Status</h2>
+        <div id="user-status">Loading...</div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="user_pages/home_page/js/firebase-config.js"></script>
+    
+    <script>
+        // Test Firebase Configuration
+        try {
+            if (!firebaseConfig) {
+                document.getElementById('config-status').innerHTML = '<span class="error">❌ Firebase config not loaded</span>';
+            } else if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'your-api-key-here') {
+                document.getElementById('config-status').innerHTML = '<span class="error">❌ Firebase config not updated</span>';
+            } else {
+                document.getElementById('config-status').innerHTML = '<span class="success">✅ Firebase config loaded successfully</span>';
+            }
+        } catch (error) {
+            document.getElementById('config-status').innerHTML = '<span class="error">❌ Config error: ' + error.message + '</span>';
+        }
+        
+        // Test Firebase Initialization
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                document.getElementById('auth-status').innerHTML = '<span class="success">✅ Firebase initialized successfully</span>';
+            } else {
+                document.getElementById('auth-status').innerHTML = '<span class="success">✅ Firebase already initialized</span>';
+            }
+            
+            // Test Auth Service
+            const auth = firebase.auth();
+            if (auth) {
+                document.getElementById('auth-status').innerHTML = '<span class="success">✅ Firebase Auth service available</span>';
+            } else {
+                document.getElementById('auth-status').innerHTML = '<span class="error">❌ Firebase Auth service not available</span>';
+            }
+            
+            // Check current user
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    document.getElementById('user-status').innerHTML = '<span class="success">✅ User signed in: ' + user.email + '</span>';
+                } else {
+                    document.getElementById('user-status').innerHTML = '<span class="error">❌ No user signed in</span>';
+                }
+            });
+            
+        } catch (error) {
+            document.getElementById('auth-status').innerHTML = '<span class="error">❌ Firebase initialization error: ' + error.message + '</span>';
+        }
+    </script>
+</body>
+</html>

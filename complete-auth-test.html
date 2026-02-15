@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Authentication Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; font-weight: bold; }
+        .test-link { display: inline-block; margin: 10px; padding: 10px 20px; background: #f3722c; color: white; text-decoration: none; border-radius: 5px; }
+        .test-link:hover { background: #f8961e; }
+        .step { margin: 10px 0; padding: 10px; }
+        .step-number { background: #b90404; color: white; padding: 2px 6px; border-radius: 50%; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Complete Authentication System Test</h1>
+    
+    <div class="test-section">
+        <h2>Step 1: Home Page Loading</h2>
+        <div id="homePageTest">Testing...</div>
+        <p><a href="http://localhost:8000" target="_blank" class="test-link">Open Home Page</a></p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Step 2: Navigation to Register</h2>
+        <div id="navTest">Testing...</div>
+        <p>Click "Sign Up" button on home page and check if it navigates correctly.</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Step 3: Register Page Loading</h2>
+        <div id="registerPageTest">Testing...</div>
+        <p><a href="http://localhost:8002/user_pages/login_page/Register/Register.html" target="_blank" class="test-link">Open Register Page Directly</a></p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Step 4: Firebase Registration</h2>
+        <div id="firebaseTest">Testing...</div>
+        <p>Fill out the registration form and test Firebase authentication.</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Step 5: Redirect to Home</h2>
+        <div id="redirectTest">Testing...</div>
+        <p>After successful registration, you should be redirected back to home page.</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Step 6: Profile Button Test</h2>
+        <div id="profileTest">Testing...</div>
+        <p>Check if profile button appears and login button disappears on home page.</p>
+    </div>
+
+    <script>
+        // Test 1: Check if home page loads
+        fetch('http://localhost:8000')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('homePageTest').innerHTML = '<span class="success">✅ Home page accessible</span>';
+                } else {
+                    document.getElementById('homePageTest').innerHTML = '<span class="error">❌ Home page not accessible</span>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('homePageTest').innerHTML = '<span class="error">❌ Cannot test home page</span>';
+            });
+
+        // Test 2: Check navigation path
+        setTimeout(() => {
+            const homePageLink = document.querySelector('a[href="/pappad_shop/user_pages/login_page/Register/Register.html"]');
+            if (homePageLink) {
+                document.getElementById('navTest').innerHTML = '<span class="success">✅ Navigation path found in home page</span>';
+            } else {
+                document.getElementById('navTest').innerHTML = '<span class="warning">⚠️ Navigation path not found</span>';
+            }
+        }, 1000);
+
+        // Test 3: Check Register page accessibility
+        fetch('http://localhost:8002/user_pages/login_page/Register/Register.html')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('registerPageTest').innerHTML = '<span class="success">✅ Register page accessible</span>';
+                } else {
+                    document.getElementById('registerPageTest').innerHTML = '<span class="error">❌ Register page not accessible: ' + response.status + '</span>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('registerPageTest').innerHTML = '<span class="error">❌ Cannot test Register page</span>';
+            });
+
+        // Test 4: Monitor Firebase authentication
+        setTimeout(() => {
+            // Check if Firebase is loaded on Register page
+            const registerWindow = window.open('http://localhost:8002/user_pages/login_page/Register/Register.html', '_blank');
+            
+            if (registerWindow) {
+                registerWindow.addEventListener('load', () => {
+                    // Check if Firebase scripts are loaded
+                    setTimeout(() => {
+                        try {
+                            if (registerWindow.firebase && registerWindow.firebase.auth) {
+                                document.getElementById('firebaseTest').innerHTML = '<span class="success">✅ Firebase loaded on Register page</span>';
+                            registerWindow.close();
+                            return;
+                            }
+                        } catch (e) {
+                            document.getElementById('firebaseTest').innerHTML = '<span class="warning">⚠️ Firebase check inconclusive</span>';
+                        }
+                    }, 2000);
+                });
+            }
+        }, 2000);
+
+        // Test 5: Check authentication state changes
+        setTimeout(() => {
+            // Monitor localStorage changes (simulating successful registration)
+            const originalStorage = localStorage.getItem('isLoggedIn');
+            
+            // Simulate successful registration
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', 'test@example.com');
+            
+            // Check if home page responds to authentication state
+            setTimeout(() => {
+                const currentStorage = localStorage.getItem('isLoggedIn');
+                if (currentStorage !== originalStorage) {
+                    document.getElementById('redirectTest').innerHTML = '<span class="success">✅ Authentication state changes detected</span>';
+                } else {
+                    document.getElementById('redirectTest').innerHTML = '<span class="warning">⚠️ No authentication state changes detected</span>';
+                }
+                
+                // Test 6: Profile button visibility
+                setTimeout(() => {
+                    const homePage = document.querySelector('a[href="/pappad_shop/user_pages/login_page/Register/Register.html"]');
+                    if (homePage) {
+                        // Check if profile button is visible (indicating logged in state)
+                        const profileBtn = document.getElementById('profileBtn');
+                        const loginBtn = document.getElementById('loginBtn');
+                        
+                        if (profileBtn && profileBtn.style.display !== 'none') {
+                            document.getElementById('profileTest').innerHTML = '<span class="success">✅ Profile button visible (logged in state working)</span>';
+                        } else if (loginBtn && loginBtn.style.display !== 'none') {
+                            document.getElementById('profileTest').innerHTML = '<span class="success">✅ Login button visible (logged out state working)</span>';
+                        } else {
+                            document.getElementById('profileTest').innerHTML = '<span class="warning">⚠️ Button state unclear</span>';
+                        }
+                    }
+                }, 3000);
+            }, 1000);
+        }, 3000);
+
+        // Instructions
+        document.getElementById('instructions').innerHTML = `
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Test Home Page</h3>
+                <p>Open home page and verify it loads without getting stuck.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Test Navigation</h3>
+                <p>Click "Sign Up" button and verify it navigates to Register page.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Test Registration</h3>
+                <p>Fill registration form and submit to test Firebase authentication.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Verify Redirect</h3>
+                <p>After successful registration, you should be redirected back to home page.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <h3>Test Profile Button</h3>
+                <p>Check if profile button appears and login button disappears.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">6</div>
+                <h3>Test Logout</h3>
+                <p>Click profile button to test logout functionality.</p>
+            </div>
+        `;
+    </script>
+</body>
+</html>

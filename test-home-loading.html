@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page Loading Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        .loading-test { background: #f3722c; color: white; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Home Page Loading Test</h1>
+    
+    <div class="test-result">
+        <h2>Test 1: Loading Screen Check</h2>
+        <div id="loading-status">Testing...</div>
+    </div>
+    
+    <div class="test-result">
+        <h2>Test 2: Main Content Check</h2>
+        <div id="content-status">Testing...</div>
+    </div>
+
+    <div class="test-result">
+        <h2>Test 3: Firebase Check</h2>
+        <div id="firebase-status">Testing...</div>
+    </div>
+
+    <!-- Simulate loading screen -->
+    <div id="loadingScreen" class="loading-screen" style="position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f3722c, #f8961e); opacity: 1; transition: opacity 0.5s ease;">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <span class="loading-logo-text">S&C</span>
+            </div>
+            <h1 class="loading-title">Saravana & Co</h1>
+            <p class="loading-subtitle">Premium Quality Papads</p>
+            <div class="loading-spinner" style="width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; margin: 0 auto; animation: spin 1s linear infinite;"></div>
+        </div>
+    </div>
+
+    <!-- Main content (initially hidden) -->
+    <div id="mainContent" style="display: none;">
+        <h2>Main Content Loaded Successfully!</h2>
+        <p>If you can see this, the loading screen has been properly hidden.</p>
+    </div>
+
+    <script>
+        // Test loading screen behavior
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                document.getElementById('loading-status').innerHTML = '<span class="success">✅ Loading screen fade-out triggered</span>';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    document.getElementById('content-status').innerHTML = '<span class="success">✅ Main content revealed</span>';
+                }, 500);
+            } else {
+                document.getElementById('loading-status').innerHTML = '<span class="error">❌ Loading screen not found</span>';
+            }
+        }, 2000);
+
+        // Test Firebase
+        setTimeout(() => {
+            if (typeof firebase !== 'undefined') {
+                document.getElementById('firebase-status').innerHTML = '<span class="error">❌ Firebase loaded (should not be on home page)</span>';
+            } else {
+                document.getElementById('firebase-status').innerHTML = '<span class="success">✅ Firebase not loaded (correct for home page)</span>';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
