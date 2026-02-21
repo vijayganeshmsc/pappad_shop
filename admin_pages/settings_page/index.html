@@ -1,57 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saravana & Co Papads | Settings</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;548;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../admin_dashboard/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saravana & Co Papads | Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../admin_dashboard/styles.css">
+    <style>
+        /* Additional styles for settings page */
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .settings-header h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ffd500;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        .settings-header .subtitle {
+            color: #FFF3E0;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .card-panel {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(225, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            margin-bottom: 20px;
+        }
+        
+        .card-panel h3 {
+            font-family: 'Dancing Script', cursive;
+            color: #ffd500;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .form-control-custom {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: 548;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-custom::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-control-custom:focus {
+            border-color: #fdcb00;
+            box-shadow: 0 0 30px rgba(255, 209, 102, 0.1);
+        }
+        
+        textarea.form-control-custom {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Toggle switch */
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .toggle-group:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-label {
+            color: #FFF3E0;
+            font-size: 1rem;
+        }
+        
+        .toggle-description {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 28px;
+            transition: 0.3s;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #F3722C, #F8961E);
+            border-color: transparent;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(28px);
+        }
+        
+        /* Buttons */
+        .btn-save {
+            background: linear-gradient(135deg, #F3722C, #F8961E);
+            color: #b90404;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn-save:hover {
+            background: linear-gradient(135deg, #F8961E, #F3722C);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFF3E0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-right: 15px;
+        }
+        
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Profile section */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F3722C, #F8961E);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b90404;
+        }
+        
+        .profile-info h4 {
+            color: #FFF3E0;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+        
+        .btn-change-photo {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffd500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+        
+        .btn-change-photo:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Section tabs */
+        .settings-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .settings-tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #FFF3E0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .settings-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .settings-tab.active {
+            background: linear-gradient(135deg, #F3722C, #F8961E);
+            color: #b90404;
+            border-color: transparent;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .settings-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-panel {
+                padding: 20px;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .settings-tabs {
+                justify-content: center;
+            }
+            
+            .form-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .form-actions .btn-cancel {
+                margin-right: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="admin-header">
-    <div class="logo"><h1>Saravana & Co Papads</h1></div>
-    <div class="admin-info"><span>Welcome, Admin</span><button class="btn-logout">Logout</button></div>
-  </header>
-
-  <nav class="sidebar">
-    <ul>
-      <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
-      <li><a href="../product_management_page/index.html">Products</a></li>
-      <li><a href="../order_page/index.html">Orders</a></li>
-      <li><a href="../inventory_page/index.html">Inventory</a></li>
-      <li><a href="../customers_page/index.html">Customers</a></li>
-      <li><a href="../reports_page/index.html">Reports</a></li>
-      <li class="active"><a href="index.html">Settings</a></li>
-    </ul>
-  </nav>
-
-  <main class="main-content">
-    <div class="container-fluid">
-      <div class="card card-panel">
-        <div class="card-body">
-          <h2 class="card-title">Settings</h2>
-          <p class="muted">Manage store preferences and admin account settings.</p>
-          <form class="mt-3">
-            <div class="mb-3">
-              <label class="form-label">Store Name</label>
-              <input class="form-control" value="Saravana & Co Papads">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Contact Email</label>
-              <input class="form-control" value="support@saravana.com">
-            </div>
-            <button class="btn-primary w-100">Save Settings</button>
-          </form>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="logo">
+            <h1>Saravana & Co Papads</h1>
         </div>
-      </div>
-    </div>
-  </main>
+        <div class="admin-info">
+            <span>Welcome, Admin</span>
+            <button class="btn-logout">Logout</button>
+        </div>
+    </header>
 
-  <script src="../order_page/script.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../admin_dashboard/nav.js"></script>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <ul>
+            <li><a href="../admin_dashboard/index.html">Dashboard</a></li>
+            <li><a href="../product_management_page/index.html">Products</a></li>
+            <li><a href="../order_page/index.html">Orders</a></li>
+            <li><a href="../inventory_page/index.html">Inventory</a></li>
+            <li><a href="../customers_page/index.html">Customers</a></li>
+            <li><a href="../reports_page/index.html">Reports</a></li>
+            <li class="active"><a href="index.html">Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="settings-header">
+                <div>
+                    <h2>Settings</h2>
+                    <p class="subtitle">Manage your store preferences and admin account</p>
+                </div>
+            </div>
+
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="settings-tab active">General</button>
+                <button class="settings-tab">Store</button>
+                <button class="settings-tab">Notifications</button>
+                <button class="settings-tab">Security</button>
+            </div>
+
+            <!-- General Settings -->
+            <div class="card-panel">
+                <h3>Admin Profile</h3>
+                
+                <div class="profile-section">
+                    <div class="profile-avatar">SA</div>
+                    <div class="profile-info">
+                        <h4>Super Admin</h4>
+                        <p>admin@saravana.com</p>
+                        <button class="btn-change-photo">Change Photo</button>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control-custom" value="Super Admin">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control-custom" value="admin@saravana.com">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-control-custom" value="+91 98765 43210">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <input type="text" class="form-control-custom" value="Administrator" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Settings -->
+            <div class="card-panel">
+                <h3>Store Information</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Store Name</label>
+                            <input type="text" class="form-control-custom" value="Saravana & Co Papads">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" class="form-control-custom" value="Both retail and wholesale traders">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Store Address</label>
+                    <textarea class="form-control-custom">123, Main Street, Coimbatore, Tamil Nadu - 641001</textarea>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Contact Email</label>
+                            <input type="email" class="form-control-custom" value="contact@saravana.com">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Contact Phone</label>
+                            <input type="tel" class="form-control-custom" value="+91 98765 43210">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="card-panel">
+                <h3>Notification Preferences</h3>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Email Notifications</div>
+                        <div class="toggle-description">Receive email updates for new orders</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">SMS Notifications</div>
+                        <div class="toggle-description">Receive SMS alerts for important updates</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Low Stock Alerts</div>
+                        <div class="toggle-description">Get notified when inventory is running low</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Daily Reports</div>
+                        <div class="toggle-description">Receive daily sales summary via email</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="card-panel">
+                <h3>Security</h3>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Two-Factor Authentication</div>
+                        <div class="toggle-description">Add an extra layer of security to your account</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Session Timeout</div>
+                        <div class="toggle-description">Automatically log out after 30 minutes of inactivity</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="form-group" style="margin-top: 25px;">
+                    <label>Change Password</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="password" class="form-control-custom" placeholder="Current Password">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="password" class="form-control-custom" placeholder="New Password">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="password" class="form-control-custom" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="form-actions" style="margin-top: 20px;">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
