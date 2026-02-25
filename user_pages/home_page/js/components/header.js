@@ -81,35 +81,66 @@ export function initHeader() {
     }
   });
 
-  // Check Login State (localStorage only for home page)
+  // Check Login State with Supabase
   const loginBtn = document.getElementById('loginBtn');
   const profileBtn = document.getElementById('profileBtn');
 
-  function checkLoginState() {
-    // Use localStorage only for home page (no Firebase integration needed here)
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  async function checkLoginState() {
+    try {
+      // Check if we have a session in localStorage
+      const sessionStr = localStorage.getItem('supabaseSession');
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-    if (isLoggedIn) {
-      if (loginBtn) loginBtn.style.display = 'none';
-      if (profileBtn) {
-        profileBtn.style.display = 'inline-flex';
-        // Remove existing event listener to prevent duplicates
-        profileBtn.replaceWith(profileBtn.cloneNode(true));
-        const newProfileBtn = document.getElementById('profileBtn');
-        // Add logout functionality
-        newProfileBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (confirm('Do you want to logout?')) {
-            // Clear localStorage
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userData');
-            checkLoginState(); // Update UI immediately
-          }
-        });
+      if (isLoggedIn && sessionStr) {
+        // User is logged in
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (profileBtn) {
+          profileBtn.style.display = 'inline-flex';
+          // Remove existing event listener to prevent duplicates
+          profileBtn.replaceWith(profileBtn.cloneNode(true));
+          const newProfileBtn = document.getElementById('profileBtn');
+          
+          // Add logout functionality
+          newProfileBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            if (confirm('Do you want to logout?')) {
+              try {
+                // Sign out from Supabase
+                if (window.supabaseClient) {
+                  await window.supabaseClient.auth.signOut();
+                }
+              } catch (error) {
+                console.error('Logout error:', error);
+              }
+              
+              // Clear localStorage
+              localStorage.removeItem('isLoggedIn');
+              localStorage.removeItem('userEmail');
+              localStorage.removeItem('userName');
+              localStorage.removeItem('userId');
+              localStorage.removeItem('supabaseSession');
+              localStorage.removeItem('userData');
+              
+              // Update UI immediately
+              checkLoginState();
+            }
+          });
+        }
+      } else {
+        // User is not logged in
+        if (loginBtn) {
+          loginBtn.style.display = 'inline-block';
+          // Add click handler to redirect to sign-in page
+          loginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '../login_page/SignIn/SignIn.html';
+          });
+        }
+        if (profileBtn) profileBtn.style.display = 'none';
       }
-    } else {
+    } catch (error) {
+      console.error('Error checking login state:', error);
+      // Default to logged out
       if (loginBtn) loginBtn.style.display = 'inline-block';
       if (profileBtn) profileBtn.style.display = 'none';
     }

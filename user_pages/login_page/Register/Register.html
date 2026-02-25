@@ -73,9 +73,9 @@
 
         <!-- Footer -->
         <div class="form-footer text-white">
-          Already a member? <a href="/pappad_shop/user_pages/login_page/SignIn/SignIn.html">Sign In</a>
+          Already a member? <a href="../SignIn/SignIn.html">Sign In</a>
           <br>
-          <a href="#" style="color: #fff; text-decoration: none;">Already have an account? Sign In instead</a>
+          <a href="../../password_reset_page/reset.html" style="color: #ffca28;">Forgot password?</a>
         </div>
       </form>
     </div>
@@ -103,9 +103,15 @@
         }, 200);
       });
 
-      // Handle Registration
-      document.getElementById('registerForm').addEventListener('submit', function(e) {
+      // Handle Registration with Supabase
+      document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault(); // Prevent default form submission
+        
+        // Show loading state
+        const registerBtn = document.querySelector('.btn-register');
+        const originalText = registerBtn.textContent;
+        registerBtn.textContent = 'Registering...';
+        registerBtn.disabled = true;
         
         // Get form values
         const name = document.getElementById('forname').value;
@@ -114,76 +120,80 @@
         const email = document.getElementById('foremail').value;
         const password = document.getElementById('forpassword').value;
         
-        // Initialize Firebase only if not already initialized
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        const auth = firebase.auth();
-        
-        // Create user with Firebase
-        auth.createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // User created successfully
-            const user = userCredential.user;
+        try {
+          // Sign up with Supabase
+          const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+              data: {
+                full_name: name,
+                phone: phone,
+                address: address
+              }
+            }
+          });
+          
+          if (error) {
+            // Handle errors
+            let errorMessage = 'Registration failed. Please try again.';
             
-            // Update user profile with display name
-            return user.updateProfile({
-              displayName: name
-            });
-          })
-          .then(() => {
-            // Store additional user data (you can use Firebase Firestore later)
+            if (error.message.includes('already registered')) {
+              errorMessage = 'This email is already registered. Please sign in instead.';
+            } else if (error.message.includes('password')) {
+              errorMessage = 'Password should be at least 6 characters long.';
+            } else if (error.message.includes('email')) {
+              errorMessage = 'Please enter a valid email address.';
+            } else {
+              errorMessage = error.message;
+            }
+            
+            alert(errorMessage);
+            console.error('Registration error:', error);
+          } else {
+            // User created successfully
+            const user = data.user;
+            
+            // Store additional user data in localStorage
             const userData = {
+              id: user.id,
               name: name,
               phone: phone,
               address: address,
               email: email
             };
             localStorage.setItem('userData', JSON.stringify(userData));
-            
-            // Set login state
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userId', user.id);
+            
+            if (data.session) {
+              localStorage.setItem('supabaseSession', JSON.stringify(data.session));
+            }
             
             // Show success message
             alert('Registration successful! Redirecting to home page...');
             
             // Redirect to Home Page
-            window.location.href = '../../home_page/index.html';
-          })
-          .catch((error) => {
-            // Handle errors
-            let errorMessage = 'Registration failed. Please try again.';
-            
-            switch(error.code) {
-              case 'auth/email-already-in-use':
-                errorMessage = 'This email is already registered. Please sign in instead.';
-                break;
-              case 'auth/weak-password':
-                errorMessage = 'Password should be at least 6 characters long.';
-                break;
-              case 'auth/invalid-email':
-                errorMessage = 'Please enter a valid email address.';
-                break;
-              case 'auth/network-request-failed':
-                errorMessage = 'Network error. Please check your connection.';
-                break;
-              default:
-                errorMessage = error.message;
-            }
-            
-            alert(errorMessage);
-            console.error('Registration error:', error);
-          });
+            window.location.href = '../../home_page/Home.html';
+          }
+        } catch (error) {
+          alert('An unexpected error occurred. Please try again.');
+          console.error('Unexpected error:', error);
+        } finally {
+          // Restore button state
+          registerBtn.textContent = originalText;
+          registerBtn.disabled = false;
+        }
       });
     </script>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Firebase Configuration -->
-    <script src="firebase-config.js"></script>
+    <!-- Supabase Configuration -->
+    <script src="../supabase-config.js"></script>
 
     <!-- Bootstrap JS -->
     <script 

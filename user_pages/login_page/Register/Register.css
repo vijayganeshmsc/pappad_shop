@@ -3,7 +3,7 @@
 ----------------------------------------------------- */
 body {
   font-family: 'Montserrat', sans-serif;
-  background: url(../Papad.png);
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
    backdrop-filter: blur(3px);
   filter: brightness(0.98);
   background-size: cover;

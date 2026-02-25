@@ -17,7 +17,7 @@
     <!-- Page Specific Styles -->
     <style>
         /* Custom Header Styles for Home Page */
-        .announcement-bar {
+            .announcement-bar {
             display: none !important; /* Hide announcement bar */
         }
 
@@ -235,8 +235,8 @@
                 <!-- Icons -->
                 <div class="header-actions">
                     <!-- New Action Buttons -->
-                    <a href="/pappad_shop/user_pages/login_page/Register/Register.html" class="header-action-btn" id="loginBtn">
-                        Sign Up
+                    <a href="../login_page/SignIn/SignIn.html" class="header-action-btn" id="loginBtn">
+                        Sign in
                     </a>
                     
                     <a href="#" class="header-icon-btn" id="profileBtn" aria-label="Profile Dashboard" style="display: none;">
@@ -627,6 +627,12 @@
             <path d="m18 15-6-6-6 6"></path>
         </svg>
     </button>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Supabase Configuration -->
+    <script src="js/supabase-config.js"></script>
 
     <!-- JavaScript -->
     <script type="module" src="js/main.js"></script>

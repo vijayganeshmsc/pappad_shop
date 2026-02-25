@@ -120,7 +120,7 @@ body {
   font-family: var(--font-secondary);
   line-height: 1.6;
   color: #333;
-  background-color: var(--color-light-cream); /* Theme compliance: Light Cream instead of White */
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
   overflow-x: hidden;
   font-size: var(--fs-p); /* Theme compliance */
   padding: 20px; /* Theme compliance: default body padding */
