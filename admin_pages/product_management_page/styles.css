@@ -46,7 +46,7 @@ body {
 }
 
 .btn-logout {
-  background: linear-gradient(135deg, #F3722C, #F8961E);
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
   color: #b90404;
   border: none;
   padding: 8px 16px;
@@ -58,7 +58,7 @@ body {
 }
 
 .btn-logout:hover {
-  background: linear-gradient(135deg, #F8961E, #F3722C);
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
@@ -147,7 +147,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #F3722C, #F8961E);
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
   color: #b90404;
   border: none;
   padding: 12px 24px;
@@ -207,7 +207,7 @@ body {
 .stat-icon {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #F3722C, #F8961E);
+  background: linear-gradient(135deg, #f8961e 0%, #f5881e 30%, #e65100 55%, #d94800 85%, #c1390f 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
