@@ -1017,17 +1017,60 @@
         }
 
         // ============================================================
-        // CHECKOUT
+        // ORDER KEY
+        // ============================================================
+        const ORDER_KEY = 'pappad_shop_last_order';
+
+        // ============================================================
+        // CHECKOUT - Navigate to Order Confirmation
         // ============================================================
         function proceedCheckout() {
             const cart = getCart();
             if (!cart.length) { toast('Your cart is empty!', 'error'); return; }
-            toast('Proceeding to checkout...', 'info');
-            setTimeout(() => alert('Checkout page will load here!'), 600);
+            
+            // Save order data to localStorage for order confirmation page
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const delivery = subtotal >= 500 ? 0 : 50;
+            
+            const orderData = {
+                orderId: generateOrderId(),
+                orderDate: formatDate(new Date()),
+                items: cart,
+                discount: discount,
+                customer: {
+                    name: 'Guest Customer',
+                    address: '123, MG Road, Anna Nagar, Madurai, Tamil Nadu - 625001',
+                    phone: '+91 98765 43210'
+                },
+                payment: {
+                    method: 'UPI (Google Pay)',
+                    transactionId: 'TXN' + Date.now(),
+                    date: formatDate(new Date())
+                }
+            };
+            
+            localStorage.setItem(ORDER_KEY, JSON.stringify(orderData));
+            
+            toast('Redirecting to order confirmation...', 'info');
+            setTimeout(() => {
+                window.location.href = '../order_confirmation_page/order_confirmation.html';
+            }, 800);
         }
+        
+        function generateOrderId() {
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g, '');
+            const timeStr = now.toTimeString().slice(0,5).replace(':', '');
+            return 'ORD' + dateStr + timeStr;
+        }
+        
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString('en-IN', options);
+        }
+        
         function continueShopping() {
             toast('Redirecting to products...', 'info');
-            // Redirect to home page products
             window.location.href = '../home_page/home.html';
         }
 

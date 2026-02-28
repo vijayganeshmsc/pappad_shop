@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Order Confirmed - Saravana & Co Premium Quality Papads">
+    <title>Order Confirmed - Saravana & Co Papads</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23fdcb00'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='%23b90404' font-weight='bold'>S</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES — matches home page exactly
+        ============================================ */
+        :root {
+            --font-primary: 'Dancing Script', cursive;
+            --font-secondary: 'Montserrat', sans-serif;
+            --color-gold: #fdcb00;
+            --color-dark-red: #b90404;
+            --color-orange-1: #f3722c;
+            --color-orange-2: #f8961e;
+            --color-white: #ffffff;
+            --color-light-cream: #ffe0b2;
+            --color-white-80: rgba(255,255,255,0.8);
+            --color-white-90: rgba(255,255,255,0.9);
+            --color-card-bg: rgba(255,255,255,0.12);
+            --color-card-border: rgba(225,255,255,0.15);
+            --gradient-orange: linear-gradient(135deg, #f3722c, #f8961e);
+            --gradient-orange-hover: linear-gradient(135deg, #f8961e, #f3722c);
+            --shadow-card: 0 8px 24px rgba(0,0,0,0.1);
+            --shadow-button-hover: 0 6px 20px rgba(0,0,0,0.25);
+            --radius-card: 1rem;
+            --radius-input: 12px;
+        }
+
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--color-light-cream);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        button { font-family: var(--font-secondary); cursor: pointer; border: none; outline: none; transition: all 0.3s ease; }
+        button:hover { transform: translateY(-2px); box-shadow: var(--shadow-button-hover); }
+        input { font-family: var(--font-secondary); outline: none; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--gradient-orange); border-radius: 5px; }
+
+        /* ============================================
+           HEADER — exact clone of home page
+        ============================================ */
+        .header {
+            background: var(--gradient-orange);
+            position: sticky; top: 0; z-index: 50;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideDown 0.5s ease;
+        }
+        .header .container { max-width: 100%; padding: 0; margin: 0; }
+        .header-container {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.5rem 1rem; gap: 1rem; max-width: 100%;
+        }
+        .header-logo-wrapper { flex-shrink: 0; display: flex; align-items: center; transition: transform 0.2s; }
+        .header-logo-wrapper:hover { transform: scale(1.05); }
+        .header-logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; border: 2px solid rgba(255,255,255,0.5); }
+        .header-logo-text { margin-left: 0.75rem; }
+        .header-logo-title { font-size: 1.4rem; font-family: var(--font-primary); color: white; font-weight: 700; }
+        .header-logo-subtitle { font-size: 0.7rem; color: rgba(255,255,255,0.85); }
+        .header-nav { display: none; align-items: center; gap: 2rem; }
+        .header-nav-link { font-weight: 800; font-size: 1.1rem; color: #ffca28; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.5rem 1rem; transition: all 0.2s; }
+        .header-nav-link:hover { color: transparent; -webkit-text-stroke: 1px white; text-shadow: 0 0 5px rgba(255,255,255,0.8); transform: scale(1.1); }
+        .header-nav-link.active { color: white; }
+        .header-search { display: none; align-items: center; flex: 1; max-width: 28rem; margin: 0 1rem; position: relative; }
+        .header-search-input {
+            width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem;
+            background: linear-gradient(to right, #ffecb3, #ffca28);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 9999px; color: #000; font-weight: 600;
+            font-size: 0.95rem; transition: all 0.3s;
+        }
+        .header-search-input::placeholder { color: rgba(0,0,0,0.6); }
+        .header-search-input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+        .header-search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.5); }
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+        .header-action-btn {
+            background: rgba(255,255,255,0.2); color: white;
+            border: 1px solid rgba(255,255,255,0.6); padding: 0.5rem 1.2rem;
+            border-radius: 9999px; font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s; white-space: nowrap;
+        }
+        .header-action-btn:hover { background: white; color: #e65100; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: white; }
+        .header-icon-btn { background: transparent; color: #ffca28; padding: 0.5rem; transition: all 0.3s; border-radius: 0.5rem; position: relative; }
+        .header-icon-btn:hover { color: white; filter: drop-shadow(0 0 5px rgba(255,255,255,0.8)); transform: scale(1.2); }
+        .header-cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background: var(--color-dark-red); color: white; font-size: 0.75rem; font-weight: 700; border-radius: 9999px; width: 1.25rem; height: 1.25rem; display: flex; align-items: center; justify-content: center; animation: scaleIn 0.3s ease; }
+        .header-mobile-menu-btn { display: block; }
+        .header-mobile-menu { border-top: 1px solid rgba(255,255,255,0.2); padding: 1rem 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .header-mobile-menu.open { max-height: 500px; }
+        .header-mobile-menu-link { display: block; padding: 0.75rem 1rem; font-weight: 700; color: #ffca28; border-radius: 0.5rem; transition: all 0.3s; text-transform: uppercase; }
+        .header-mobile-menu-link:hover { background: rgba(255,255,255,0.15); color: white; }
+
+        @media (min-width: 768px) {
+            .header-search { display: flex; }
+            .header-mobile-menu-btn { display: none; }
+        }
+        @media (min-width: 992px) { .header-nav { display: flex; } }
+
+        /* ============================================
+           SUCCESS HERO SECTION
+        ============================================ */
+        .success-hero {
+            background: var(--gradient-orange);
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .success-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        .success-icon {
+            width: 120px; height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 1;
+        }
+        .success-icon svg {
+            color: #22c55e;
+            animation: checkDraw 0.5s ease 0.3s both;
+        }
+        @keyframes successPop {
+            0% { transform: scale(0) rotate(-45deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        @keyframes checkDraw {
+            0% { stroke-dashoffset: 50; opacity: 0; }
+            100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+        .success-title {
+            font-family: var(--font-primary);
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 0.5s ease 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        .success-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            animation: fadeIn 0.5s ease 0.3s both;
+            position: relative;
+            z-index: 1;
+        }
+        .order-id-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            margin-top: 1.5rem;
+            animation: fadeInUp 0.5s ease 0.4s both;
+            position: relative;
+            z-index: 1;
+        }
+        .order-id-box svg { color: white; }
+        .order-id-box span { color: white; font-weight: 700; font-size: 1rem; }
+
+        /* ============================================
+           MAIN CONTENT
+        ============================================ */
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+
+        /* ============================================
+           ORDER DETAILS CARD
+        ============================================ */
+        .card {
+            background: white; border-radius: var(--radius-card);
+            box-shadow: var(--shadow-card); overflow: hidden;
+            animation: fadeInUp 0.5s ease 0.5s both;
+        }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 2px solid rgba(253,203,0,0.25);
+            background: linear-gradient(to right, rgba(243,114,44,0.04), rgba(248,150,30,0.04));
+        }
+        .card-title { font-family: var(--font-primary); font-size: 1.5rem; color: var(--color-gold); display: flex; align-items: center; gap: 0.6rem; }
+        .card-body { padding: 1.5rem; }
+
+        /* Order Items Table */
+        .order-table { width: 100%; border-collapse: collapse; }
+        .order-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(to right, rgba(243,114,44,0.07), rgba(248,150,30,0.07));
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--color-orange-1);
+        }
+        .order-table th:nth-child(2),
+        .order-table th:nth-child(3),
+        .order-table th:nth-child(4) { text-align: center; }
+        .order-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            vertical-align: middle;
+        }
+        .order-table td:nth-child(2),
+        .order-table td:nth-child(3),
+        .order-table td:nth-child(4) { text-align: center; }
+        .order-table tr:last-child td { border-bottom: none; }
+        .order-table tr:hover { background: rgba(253,203,0,0.03); }
+        
+        .order-item-img {
+            width: 60px; height: 60px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            border: 2px solid #f3f4f6;
+        }
+        .order-item-name { font-weight: 700; color: #1f2937; }
+        .order-item-sku { font-size: 0.75rem; color: #9ca3af; }
+        .order-item-price { font-weight: 600; color: var(--color-dark-red); }
+        .order-item-qty { 
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(253,203,0,0.15);
+            color: var(--color-dark-red);
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+        }
+        .order-item-subtotal { font-weight: 800; color: var(--color-orange-1); font-size: 1rem; }
+
+        /* Order Summary */
+        .summary-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid rgba(0,0,0,0.06);
+        }
+        .summary-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+        .summary-label { color: #6b7280; font-size: 0.95rem; }
+        .summary-value { font-weight: 700; color: #1f2937; }
+        .summary-row.discount .summary-value { color: #059669; }
+        .summary-total {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(253,203,0,0.08);
+            border-radius: 0.75rem;
+            border: 1.5px solid rgba(253,203,0,0.3);
+        }
+        .summary-total-label { font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9rem; }
+        .summary-total-amount { font-family: var(--font-primary); font-size: 1.8rem; font-weight: 700; color: var(--color-dark-red); }
+
+        /* ============================================
+           DELIVERY & PAYMENT INFO
+        ============================================ */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        @media (min-width: 768px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+
+        .info-card {
+            background: white;
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease 0.6s both;
+        }
+        .info-header {
+            background: var(--gradient-orange);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .info-header svg { color: white; }
+        .info-header h3 { font-family: var(--font-primary); font-size: 1.25rem; color: white; }
+        .info-body { padding: 1.25rem; }
+        .info-row { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.75rem; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-label { font-size: 0.75rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { font-size: 0.95rem; color: #1f2937; font-weight: 600; }
+        
+        .payment-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .payment-status.completed {
+            background: rgba(5,150,105,0.1);
+            color: #059669;
+            border: 1px solid rgba(5,150,105,0.3);
+        }
+        
+        .delivery-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(243,114,44,0.1);
+            color: var(--color-orange-1);
+            padding: 0.4rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================
+           ACTION BUTTONS
+        ============================================ */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.5s ease 0.7s both;
+        }
+        .btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .btn-primary {
+            background: var(--gradient-orange);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--gradient-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243,114,44,0.4);
+        }
+        .btn-secondary {
+            background: white;
+            color: var(--color-dark-red);
+            border: 2px solid var(--color-gold);
+        }
+        .btn-secondary:hover {
+            background: rgba(253,203,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(253,203,0,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--color-orange-1);
+            border: 2px solid var(--color-orange-1);
+        }
+        .btn-outline:hover {
+            background: rgba(243,114,44,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        .footer { background: linear-gradient(to bottom, #111827, #000); color: white; }
+        .footer-container { max-width: 1280px; margin: 0 auto; padding: 3rem 1rem 4rem; }
+        .footer-main { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+        @media (min-width: 768px) { .footer-main { grid-template-columns: repeat(2,1fr); } }
+        @media (min-width: 992px) { .footer-main { grid-template-columns: repeat(4,1fr); } }
+        .footer-logo { display: flex; align-items: center; margin-bottom: 1rem; }
+        .footer-logo-icon { width: 48px; height: 48px; background: var(--gradient-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; }
+        .footer-logo-text { margin-left: 0.75rem; }
+        .footer-logo-title { font-family: var(--font-primary); font-size: 1.25rem; color: var(--color-gold); }
+        .footer-logo-subtitle { font-size: 0.875rem; color: #9ca3af; }
+        .footer-desc { color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.7; }
+        .footer-social { display: flex; gap: 0.75rem; }
+        .footer-social a { background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 9999px; transition: all 0.3s; display: flex; }
+        .footer-social a:hover { background: var(--color-gold); transform: scale(1.2); }
+        .footer-links-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--color-gold); }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer-links li { transition: transform 0.2s; }
+        .footer-links li:hover { transform: translateX(4px); }
+        .footer-links a { color: rgba(255,255,255,0.85); font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--color-gold); }
+        .footer-contact-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; border-top: 1px solid #374151; padding-top: 1.5rem; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .footer-contact-grid { grid-template-columns: repeat(3,1fr); } }
+        .footer-contact-item { display: flex; align-items: center; gap: 0.75rem; }
+        .footer-contact-icon { background: var(--color-gold); padding: 0.6rem; border-radius: 9999px; flex-shrink: 0; display: flex; }
+        .footer-contact-label { font-size: 0.75rem; color: #9ca3af; }
+        .footer-contact-value { font-weight: 600; font-size: 0.9rem; color: white; transition: color 0.2s; }
+        .footer-contact-value:hover { color: var(--color-gold); }
+        .footer-copyright { border-top: 1px solid #374151; padding-top: 1.5rem; text-align: center; color: rgba(255,255,255,0.85); font-size: 0.85rem; }
+
+        /* ============================================
+           SCROLL TO TOP
+        ============================================ */
+        .scroll-to-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 50; width: 44px; height: 44px; border-radius: 9999px; background: var(--gradient-orange); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-button-hover); opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.3s; border: none; cursor: pointer; }
+        .scroll-to-top.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .scroll-to-top:hover { background: var(--gradient-orange-hover); transform: scale(1.1) translateY(-3px); }
+
+        /* ============================================
+           ANIMATIONS
+        ============================================ */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-container">
+                <a href="../home_page/home.html" class="header-logo-wrapper">
+                    <div class="header-logo-icon">S&C</div>
+                    <div class="header-logo-text">
+                        <div class="header-logo-title">Saravana & Co</div>
+                        <div class="header-logo-subtitle">Papad Shop</div>
+                    </div>
+                </a>
+                <nav class="header-nav">
+                    <a href="../home_page/home.html" class="header-nav-link">Home</a>
+                    <a href="#" class="header-nav-link">About</a>
+                    <a href="#" class="header-nav-link">Products</a>
+                    <a href="#" class="header-nav-link">Contact</a>
+                </nav>
+                <div class="header-search">
+                    <svg class="header-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="text" class="header-search-input" placeholder="Search papads...">
+                </div>
+                <div class="header-actions">
+                    <a href="#" class="header-action-btn">Sign Up</a>
+                    <button class="header-icon-btn header-cart" aria-label="Shopping cart" style="position:relative" onclick="window.location.href='../shopping_cart_page/shopping_cart.html'">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        <span class="header-cart-badge" id="cartBadge">0</span>
+                    </button>
+                    <button class="header-icon-btn header-mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <svg id="menuIconOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                        <svg id="menuIconClose" style="display:none" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <nav class="header-mobile-menu" id="mobileMenu">
+                <a href="../home_page/home.html" class="header-mobile-menu-link">Home</a>
+                <a href="#" class="header-mobile-menu-link">About</a>
+                <a href="#" class="header-mobile-menu-link">Products</a>
+                <a href="#" class="header-mobile-menu-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Success Hero -->
+    <div class="success-hero">
+        <div class="success-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-dasharray="50" stroke-dashoffset="50"></path>
+                <polyline points="22 4 12 14.01 9 11.01" stroke-dasharray="50" stroke-dashoffset="50"></polyline>
+            </svg>
+        </div>
+        <h1 class="success-title">Order Confirmed!</h1>
+        <p class="success-subtitle">Thank you for your order. Your order has been placed successfully.</p>
+        <div class="order-id-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span id="orderId">ORD20260128001</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+        <!-- Order Details Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    Order Summary
+                </div>
+                <span style="color: #6b7280; font-size: 0.9rem;" id="orderDate">January 28, 2026 at 3:45 PM</span>
+            </div>
+            <div class="card-body">
+                <!-- Order Items Table -->
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderItemsBody">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+
+                <!-- Order Summary -->
+                <div class="summary-section">
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value" id="summarySubtotal">₹0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Delivery Charges</span>
+                        <span class="summary-value" id="summaryDelivery">₹50.00</span>
+                    </div>
+                    <div class="summary-row discount" id="discountRow" style="display: none;">
+                        <span class="summary-label">Discount</span>
+                        <span class="summary-value" id="summaryDiscount">-₹0.00</span>
+                    </div>
+                    <div class="summary-total">
+                        <span class="summary-total-label">Total Amount</span>
+                        <span class="summary-total-amount" id="summaryTotal">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery & Payment Info -->
+        <div class="info-grid">
+            <!-- Delivery Address -->
+            <div class="info-card">
+                <div class="info-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <h3>Delivery Address</h3>
+                </div>
+                <div class="info-body">
+                    <div class="info-row">
+                        <span class="info-label">Customer</span>
+                        <span class="info-value" id="customerName">Rajesh Kumar</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address</span>
+                        <span class="info-value" id="customerAddress">123, MG Road, Anna Nagar, Madurai, Tamil Nadu - 625001</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value" id="customerPhone">+91 98765 43210</span>
+                    </div>
+                    <div class="delivery-date">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Estimated Delivery: <span id="deliveryDate">January 31, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="info-card">
+                <div class="info-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" x2="23" y1="10" y2="10"/></svg>
+                    <h3>Payment Details</h3>
+                </div>
+                <div class="info-body">
+                    <div class="info-row">
+                        <span class="info-label">Payment Method</span>
+                        <span class="info-value" id="paymentMethod">UPI (Google Pay)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Transaction ID</span>
+                        <span class="info-value" id="transactionId">TXN123456789</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Payment Status</span>
+                        <span class="payment-status completed">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Completed
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Payment Date</span>
+                        <span class="info-value" id="paymentDate">January 28, 2026 at 3:45 PM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="trackOrder()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Track Order
+            </button>
+            <button class="btn btn-secondary" onclick="downloadInvoice()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Download Invoice
+            </button>
+            <button class="btn btn-outline" onclick="continueShopping()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/></svg>
+                Continue Shopping
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div>
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">S&C</div>
+                        <div class="footer-logo-text">
+                            <div class="footer-logo-title">Saravana & Co</div>
+                            <div class="footer-logo-subtitle">Papad Shop</div>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Both retail and wholesale traders of premium quality papads, handcrafted with traditional methods since generations.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                        <a href="#" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></a>
+                        <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="white"/></svg></a>
+                    </div>
+                </div>
+                <div>
+                    <div class="footer-links-title">Quick Links</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li><li><a href="#">About Us</a></li>
+                        <li><a href="#">Products</a></li><li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-links-title">Categories</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Plain Papad</a></li><li><a href="#">Masala Papad</a></li>
+                        <li><a href="#">Garlic Papad</a></li><li><a href="#">Special Varieties</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-links-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms & Conditions</a></li><li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Shipping Policy</a></li><li><a href="#">Return Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-contact-grid">
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                    <div><p class="footer-contact-label">Call Us</p><a href="tel:+919876543210" class="footer-contact-value">+91 98765 43210</a></div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+                    <div><p class="footer-contact-label">Email Us</p><a href="mailto:info@saravanapapad.com" class="footer-contact-value">info@saravanapapad.com</a></div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                    <div><p class="footer-contact-label">Visit Us</p><p class="footer-contact-value">Tamil Nadu, India</p></div>
+                </div>
+            </div>
+            <div class="footer-copyright">© 2026 Saravana & Co Papads. All rights reserved. | Designed with ❤️ for quality</div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+
+    <script>
+        // ============================================================
+        // Order Data Storage
+        // ============================================================
+        const ORDER_KEY = 'pappad_shop_last_order';
+        const CART_KEY = 'pappad_shop_cart';
+
+        // ============================================================
+        // Initialize Order Confirmation Page
+        // ============================================================
+        function initOrderConfirmation() {
+            // Get order data from localStorage
+            const orderData = localStorage.getItem(ORDER_KEY);
+            
+            if (orderData) {
+                const order = JSON.parse(orderData);
+                renderOrderDetails(order);
+            } else {
+                // If no order data, generate demo data
+                renderDemoOrder();
+            }
+            
+            // Clear cart after order
+            localStorage.removeItem(CART_KEY);
+            updateCartBadge();
+        }
+
+        // ============================================================
+        // Render Order Details
+        // ============================================================
+        function renderOrderDetails(order) {
+            // Set Order ID and Date
+            document.getElementById('orderId').textContent = order.orderId || generateOrderId();
+            document.getElementById('orderDate').textContent = order.orderDate || formatDate(new Date());
+            
+            // Render Order Items
+            const tbody = document.getElementById('orderItemsBody');
+            tbody.innerHTML = order.items.map(item => `
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <img src="${item.image}" alt="${item.name}" class="order-item-img" 
+                                onerror="this.src='https://placehold.co/60x60/f3722c/white?text=P'">
+                            <div>
+                                <div class="order-item-name">${item.name}</div>
+                                <div class="order-item-sku">SKU: ${item.sku || 'PP-' + item.id.toString().padStart(3, '0')}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="order-item-price">₹${item.price.toLocaleString('en-IN')}</td>
+                    <td><span class="order-item-qty">${item.qty} kg</span></td>
+                    <td class="order-item-subtotal">₹${(item.price * item.qty).toLocaleString('en-IN')}</td>
+                </tr>
+            `).join('');
+
+            // Calculate Summary
+            const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const delivery = subtotal >= 500 ? 0 : 50;
+            const discount = order.discount || 0;
+            const total = subtotal + delivery - discount;
+
+            document.getElementById('summarySubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+            document.getElementById('summaryDelivery').innerHTML = delivery === 0 
+                ? '<span style="color:#059669;font-weight:700">FREE</span>' 
+                : `₹${delivery.toLocaleString('en-IN')}`;
+            
+            if (discount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('summaryDiscount').textContent = `-₹${discount.toLocaleString('en-IN')}`;
+            }
+            
+            document.getElementById('summaryTotal').textContent = `₹${total.toLocaleString('en-IN')}`;
+
+            // Set Delivery Date (3-5 days from now)
+            const deliveryDate = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + 3);
+            document.getElementById('deliveryDate').textContent = formatDate(deliveryDate);
+
+            // Set Customer Info if available
+            if (order.customer) {
+                if (order.customer.name) document.getElementById('customerName').textContent = order.customer.name;
+                if (order.customer.address) document.getElementById('customerAddress').textContent = order.customer.address;
+                if (order.customer.phone) document.getElementById('customerPhone').textContent = order.customer.phone;
+            }
+
+            // Set Payment Info
+            if (order.payment) {
+                if (order.payment.method) document.getElementById('paymentMethod').textContent = order.payment.method;
+                if (order.payment.transactionId) document.getElementById('transactionId').textContent = order.payment.transactionId;
+                if (order.payment.date) document.getElementById('paymentDate').textContent = order.payment.date;
+            }
+        }
+
+        // ============================================================
+        // Render Demo Order (when no order data)
+        // ============================================================
+        function renderDemoOrder() {
+            const demoItems = [
+                { id: 1, name: "Plain Pappad", price: 120, qty: 2, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=100&h=100&fit=crop", sku: "PP-001" },
+                { id: 2, name: "Masala Pappad", price: 150, qty: 1, image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop", sku: "PP-002" },
+                { id: 3, name: "Garlic Pappad", price: 180, qty: 3, image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=100&h=100&fit=crop", sku: "PP-003" }
+            ];
+
+            const order = {
+                orderId: generateOrderId(),
+                orderDate: formatDate(new Date()),
+                items: demoItems,
+                discount: 0
+            };
+
+            renderOrderDetails(order);
+        }
+
+        // ============================================================
+        // Helper Functions
+        // ============================================================
+        function generateOrderId() {
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g, '');
+            const timeStr = now.toTimeString().slice(0,5).replace(':', '');
+            return `ORD${dateStr}${timeStr}`;
+        }
+
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString('en-IN', options);
+        }
+
+        function fmt(n) { return `₹${n.toLocaleString('en-IN')}`; }
+
+        function updateCartBadge() {
+            const cartData = localStorage.getItem(CART_KEY);
+            const cart = cartData ? JSON.parse(cartData) : [];
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) badge.textContent = count;
+        }
+
+        // ============================================================
+        // Button Actions
+        // ============================================================
+        function trackOrder() {
+            alert('Order tracking page will load here!');
+        }
+
+        function downloadInvoice() {
+            alert('Invoice download will start soon!');
+        }
+
+        function continueShopping() {
+            window.location.href = '../home_page/home.html';
+        }
+
+        // ============================================================
+        // Mobile Menu
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('mobileMenuToggle');
+            const menu = document.getElementById('mobileMenu');
+            const open = document.getElementById('menuIconOpen');
+            const close = document.getElementById('menuIconClose');
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('open');
+                    const isOpen = menu.classList.contains('open');
+                    if (open) open.style.display = isOpen ? 'none' : 'block';
+                    if (close) close.style.display = isOpen ? 'block' : 'none';
+                });
+            }
+        });
+
+        // ============================================================
+        // Scroll to Top
+        // ============================================================
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollToTop');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+        document.getElementById('scrollToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ============================================================
+        // Initialize
+        // ============================================================
+        initOrderConfirmation();
+    </script>
+</body>
+</html>
