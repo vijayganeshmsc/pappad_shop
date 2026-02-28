@@ -2,6 +2,8 @@
 // Products Section - Dynamic Product Cards
 // ============================================
 
+import { addToCart, showToast, updateCartBadge } from '../utils/cart.js';
+
 const products = [
     {
         id: 1,
@@ -112,7 +114,7 @@ function createProductCard(product, index) {
                 </div>
 
                 <!-- Add to Cart Button -->
-                <button class="product-add-to-cart">
+                <button class="product-add-to-cart" onclick="handleAddToCart(${product.id})">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="8" cy="21" r="1"></circle>
                         <circle cx="19" cy="21" r="1"></circle>
@@ -125,6 +127,15 @@ function createProductCard(product, index) {
     `;
 }
 
+// Handle add to cart click
+window.handleAddToCart = function(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        addToCart(product);
+        showToast(`${product.name} added to cart!`, 'success');
+    }
+};
+
 export function initProducts() {
     const productsGrid = document.getElementById('productsGrid');
 
@@ -132,4 +143,7 @@ export function initProducts() {
         const productsHTML = products.map((product, index) => createProductCard(product, index)).join('');
         productsGrid.innerHTML = productsHTML;
     }
+    
+    // Initialize cart badge
+    updateCartBadge();
 }

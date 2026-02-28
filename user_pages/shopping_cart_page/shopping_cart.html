@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shopping Cart - Saravana & Co Premium Quality Papads">
+    <title>Shopping Cart - Saravana & Co Papads</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23fdcb00'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='%23b90404' font-weight='bold'>S</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES — matches home page exactly
+        ============================================ */
+        :root {
+            --font-primary: 'Dancing Script', cursive;
+            --font-secondary: 'Montserrat', sans-serif;
+            --color-gold: #fdcb00;
+            --color-dark-red: #b90404;
+            --color-orange-1: #f3722c;
+            --color-orange-2: #f8961e;
+            --color-white: #ffffff;
+            --color-light-cream: #ffe0b2;
+            --color-white-80: rgba(255,255,255,0.8);
+            --color-white-90: rgba(255,255,255,0.9);
+            --color-card-bg: rgba(255,255,255,0.12);
+            --color-card-border: rgba(225,255,255,0.15);
+            --gradient-orange: linear-gradient(135deg, #f3722c, #f8961e);
+            --gradient-orange-hover: linear-gradient(135deg, #f8961e, #f3722c);
+            --shadow-card: 0 8px 24px rgba(0,0,0,0.1);
+            --shadow-button-hover: 0 6px 20px rgba(0,0,0,0.25);
+            --radius-card: 1rem;
+            --radius-input: 12px;
+        }
+
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--color-light-cream);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        button { font-family: var(--font-secondary); cursor: pointer; border: none; outline: none; transition: all 0.3s ease; }
+        button:hover { transform: translateY(-2px); box-shadow: var(--shadow-button-hover); }
+        input { font-family: var(--font-secondary); outline: none; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--gradient-orange); border-radius: 5px; }
+
+        /* ============================================
+           LOADING SCREEN
+        ============================================ */
+        .loading-screen {
+            position: fixed; inset: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--gradient-orange);
+            opacity: 1; transition: opacity 0.5s ease;
+        }
+        .loading-screen.fade-out { opacity: 0; pointer-events: none; }
+        .loading-content { text-align: center; }
+        .loading-logo {
+            width: 96px; height: 96px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: logoScale 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .loading-logo-text { font-size: 2.25rem; font-weight: 700; color: var(--color-gold); }
+        .loading-title { font-family: var(--font-primary); font-size: 2.8rem; color: white; margin-bottom: 0.5rem; animation: fadeInUp 0.5s ease 0.3s both; }
+        .loading-subtitle { color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 2rem; animation: fadeIn 0.5s ease 0.5s both; }
+        .loading-spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; margin: 0 auto; animation: spin 1s linear infinite; }
+
+        /* ============================================
+           HEADER — exact clone of home page
+        ============================================ */
+        .header {
+            background: var(--gradient-orange);
+            position: sticky; top: 0; z-index: 50;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideDown 0.5s ease;
+        }
+        .header .container { max-width: 100%; padding: 0; margin: 0; }
+        .header-container {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.5rem 1rem; gap: 1rem; max-width: 100%;
+        }
+        .header-logo-wrapper { flex-shrink: 0; display: flex; align-items: center; transition: transform 0.2s; }
+        .header-logo-wrapper:hover { transform: scale(1.05); }
+        .header-logo-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; border: 2px solid rgba(255,255,255,0.5); }
+        .header-logo-text { margin-left: 0.75rem; }
+        .header-logo-title { font-size: 1.4rem; font-family: var(--font-primary); color: white; font-weight: 700; }
+        .header-logo-subtitle { font-size: 0.7rem; color: rgba(255,255,255,0.85); }
+        .header-nav { display: none; align-items: center; gap: 2rem; }
+        .header-nav-link { font-weight: 800; font-size: 1.1rem; color: #ffca28; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.5rem 1rem; transition: all 0.2s; }
+        .header-nav-link:hover { color: transparent; -webkit-text-stroke: 1px white; text-shadow: 0 0 5px rgba(255,255,255,0.8); transform: scale(1.1); }
+        .header-nav-link.active { color: white; }
+        .header-search { display: none; align-items: center; flex: 1; max-width: 28rem; margin: 0 1rem; position: relative; }
+        .header-search-input {
+            width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem;
+            background: linear-gradient(to right, #ffecb3, #ffca28);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 9999px; color: #000; font-weight: 600;
+            font-size: 0.95rem; transition: all 0.3s;
+        }
+        .header-search-input::placeholder { color: rgba(0,0,0,0.6); }
+        .header-search-input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+        .header-search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.5); }
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+        .header-action-btn {
+            background: rgba(255,255,255,0.2); color: white;
+            border: 1px solid rgba(255,255,255,0.6); padding: 0.5rem 1.2rem;
+            border-radius: 9999px; font-weight: 700; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s; white-space: nowrap;
+        }
+        .header-action-btn:hover { background: white; color: #e65100; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: white; }
+        .header-icon-btn { background: transparent; color: #ffca28; padding: 0.5rem; transition: all 0.3s; border-radius: 0.5rem; position: relative; }
+        .header-icon-btn:hover { color: white; filter: drop-shadow(0 0 5px rgba(255,255,255,0.8)); transform: scale(1.2); }
+        .header-cart-badge { position: absolute; top: -0.5rem; right: -0.5rem; background: var(--color-dark-red); color: white; font-size: 0.75rem; font-weight: 700; border-radius: 9999px; width: 1.25rem; height: 1.25rem; display: flex; align-items: center; justify-content: center; animation: scaleIn 0.3s ease; }
+        .header-mobile-menu-btn { display: block; }
+        .header-mobile-menu { border-top: 1px solid rgba(255,255,255,0.2); padding: 1rem 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .header-mobile-menu.open { max-height: 500px; }
+        .header-mobile-menu-link { display: block; padding: 0.75rem 1rem; font-weight: 700; color: #ffca28; border-radius: 0.5rem; transition: all 0.3s; text-transform: uppercase; }
+        .header-mobile-menu-link:hover { background: rgba(255,255,255,0.15); color: white; }
+
+        @media (min-width: 768px) {
+            .header-search { display: flex; }
+            .header-mobile-menu-btn { display: none; }
+        }
+        @media (min-width: 992px) { .header-nav { display: flex; } }
+
+        /* ============================================
+           PAGE HERO BANNER
+        ============================================ */
+        .page-banner {
+            background: var(--gradient-orange);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-banner::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
+        }
+        .page-banner-content { position: relative; z-index: 1; }
+        .page-banner-eyebrow { font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; animation: fadeIn 0.5s ease; }
+        .page-banner h1 { font-family: var(--font-primary); font-size: 3rem; color: white; margin-bottom: 0.5rem; animation: fadeInUp 0.5s ease 0.1s both; }
+        .page-banner p { color: rgba(255,255,255,0.9); font-size: 1rem; animation: fadeIn 0.5s ease 0.2s both; }
+        .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.75); animation: fadeIn 0.5s ease 0.3s both; }
+        .breadcrumb a { color: #ffca28; font-weight: 600; transition: color 0.2s; }
+        .breadcrumb a:hover { color: white; }
+
+        /* ============================================
+           MAIN LAYOUT
+        ============================================ */
+        .main-wrapper { max-width: 1280px; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+        .cart-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 1024px) { .cart-layout { grid-template-columns: 1fr 380px; } }
+
+        /* ============================================
+           SECTION CARD
+        ============================================ */
+        .card {
+            background: white; border-radius: var(--radius-card);
+            box-shadow: var(--shadow-card); overflow: hidden;
+            animation: fadeInUp 0.5s ease both;
+        }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 2px solid rgba(253,203,0,0.25);
+            background: linear-gradient(to right, rgba(243,114,44,0.04), rgba(248,150,30,0.04));
+        }
+        .card-title { font-family: var(--font-primary); font-size: 1.75rem; color: var(--color-gold); display: flex; align-items: center; gap: 0.6rem; }
+        .card-title svg { animation: bounce 2s infinite; }
+        .card-subtitle { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
+        .card-body { padding: 1.5rem; }
+
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+        /* ============================================
+           CART TABLE
+        ============================================ */
+        .table-header-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 110px 130px 100px 50px;
+            gap: 1rem; padding: 0.75rem 1rem;
+            background: linear-gradient(to right, rgba(243,114,44,0.07), rgba(248,150,30,0.07));
+            border-radius: 0.6rem; margin-bottom: 0.5rem;
+            font-weight: 700; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.8px; color: var(--color-orange-1);
+        }
+        .table-header-row span:nth-child(3),
+        .table-header-row span:nth-child(5) { text-align: center; }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 110px 130px 100px 50px;
+            gap: 1rem; align-items: center;
+            padding: 1rem; border-radius: 0.75rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.4s ease both;
+        }
+        .cart-item:nth-child(1){animation-delay:0.1s}
+        .cart-item:nth-child(2){animation-delay:0.2s}
+        .cart-item:nth-child(3){animation-delay:0.3s}
+        .cart-item:not(:last-child) { border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .cart-item:hover { background: rgba(253,203,0,0.04); border-color: rgba(253,203,0,0.2); box-shadow: 0 2px 12px rgba(243,114,44,0.08); }
+
+        .item-img-wrap { position: relative; }
+        .item-img {
+            width: 80px; height: 80px; border-radius: 0.75rem;
+            object-fit: cover; border: 2px solid #f3f4f6;
+            transition: all 0.3s;
+        }
+        .cart-item:hover .item-img { border-color: var(--color-gold); transform: scale(1.04); }
+        .item-img-badge { position: absolute; top: -6px; right: -6px; background: var(--color-dark-red); color: white; font-size: 0.6rem; font-weight: 700; border-radius: 9999px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+
+        .item-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .item-name { font-weight: 700; font-size: 0.95rem; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-sku { font-size: 0.75rem; color: #9ca3af; }
+        .item-tag { display: inline-flex; align-items: center; gap: 4px; background: rgba(253,203,0,0.15); color: var(--color-dark-red); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px; width: fit-content; border: 1px solid rgba(253,203,0,0.3); }
+
+        .item-unit-price { text-align: center; font-weight: 700; font-size: 1rem; color: var(--color-dark-red); }
+        .item-unit-label { font-size: 0.7rem; color: #9ca3af; font-weight: 400; }
+
+        .qty-selector { display: flex; align-items: center; justify-content: center; gap: 0; background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 0.6rem; overflow: hidden; transition: border-color 0.2s; }
+        .qty-selector:focus-within { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(253,203,0,0.15); }
+        .qty-btn {
+            background: transparent; border: none; color: var(--color-orange-1);
+            width: 34px; height: 36px; font-size: 1.1rem; font-weight: 700;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .qty-btn:hover { background: rgba(243,114,44,0.1); color: var(--color-dark-red); transform: none; box-shadow: none; }
+        .qty-input { width: 40px; height: 36px; border: none; background: transparent; text-align: center; font-weight: 700; font-size: 0.95rem; color: #1f2937; -moz-appearance: textfield; }
+        .qty-input::-webkit-inner-spin-button, .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+        .item-subtotal { text-align: center; }
+        .item-subtotal-amount { font-weight: 800; font-size: 1rem; color: var(--color-orange-1); }
+        .item-subtotal-label { font-size: 0.7rem; color: #9ca3af; }
+
+        .remove-btn {
+            width: 36px; height: 36px; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
+            background: transparent; border: 1.5px solid #fecaca; color: var(--color-dark-red);
+            transition: all 0.2s; cursor: pointer; margin: 0 auto;
+        }
+        .remove-btn:hover { background: var(--color-dark-red); color: white; border-color: var(--color-dark-red); transform: scale(1.1) rotate(90deg); box-shadow: none; }
+
+        /* Mobile cart item */
+        @media (max-width: 767px) {
+            .table-header-row { display: none; }
+            .cart-item {
+                grid-template-columns: 70px 1fr 40px;
+                grid-template-rows: auto auto auto;
+                gap: 0.5rem;
+            }
+            .item-img-wrap { grid-row: 1 / 3; }
+            .item-info { grid-column: 2; grid-row: 1; }
+            .item-unit-price { display: none; }
+            .qty-selector { grid-column: 2; grid-row: 2; width: fit-content; }
+            .item-subtotal { grid-column: 1 / 3; grid-row: 3; text-align: left; }
+            .remove-btn { grid-column: 3; grid-row: 1; }
+        }
+
+        /* ============================================
+           EMPTY CART
+        ============================================ */
+        .empty-cart {
+            text-align: center; padding: 4rem 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        .empty-cart-icon-wrap {
+            width: 120px; height: 120px; background: rgba(253,203,0,0.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem; border: 2px dashed rgba(253,203,0,0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+        .empty-cart-icon-wrap svg { color: var(--color-gold); }
+        .empty-cart h3 { font-family: var(--font-primary); font-size: 1.8rem; color: var(--color-gold); margin-bottom: 0.5rem; }
+        .empty-cart p { color: #6b7280; font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+        /* ============================================
+           CART FOOTER ACTIONS
+        ============================================ */
+        .cart-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.25rem 1.5rem; border-top: 1px solid rgba(0,0,0,0.07); }
+        .cart-item-count { font-size: 0.9rem; color: #6b7280; font-weight: 500; }
+        .cart-item-count strong { color: var(--color-dark-red); font-weight: 700; }
+        .btn-clear-cart {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-size: 0.85rem; font-weight: 700; color: var(--color-dark-red);
+            background: transparent; border: 1.5px solid #fecaca;
+            padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-clear-cart:hover { background: var(--color-dark-red); color: white; border-color: var(--color-dark-red); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(185,4,4,0.25); }
+
+        /* ============================================
+           ORDER SUMMARY SIDEBAR
+        ============================================ */
+        .summary-card { background: white; border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; position: sticky; top: 80px; animation: fadeInUp 0.5s ease 0.2s both; }
+        .summary-header {
+            background: var(--gradient-orange); padding: 1.25rem 1.5rem;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .summary-header h2 { font-family: var(--font-primary); font-size: 1.6rem; color: white; }
+        .summary-header svg { color: white; }
+        .summary-body { padding: 1.25rem 1.5rem; }
+
+        .summary-row { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6; }
+        .summary-row:last-of-type { border-bottom: none; }
+        .summary-label { font-size: 0.9rem; color: #6b7280; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; }
+        .summary-value { font-size: 0.95rem; font-weight: 700; color: #1f2937; }
+        .summary-row.discount .summary-value { color: #059669; }
+        .summary-total { background: rgba(253,203,0,0.08); border-radius: 0.75rem; padding: 1rem; margin: 0.75rem 0; border: 1.5px solid rgba(253,203,0,0.3); }
+        .summary-total-label { font-size: 0.85rem; color: #6b7280; font-weight: 600; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-total-amount { font-family: var(--font-primary); font-size: 2rem; font-weight: 700; color: var(--color-dark-red); }
+        .summary-total-note { font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem; }
+
+        /* Promo code */
+        .promo-wrap { padding: 1rem 1.5rem; border-top: 1px solid #f3f4f6; }
+        .promo-label { font-size: 0.8rem; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+        .promo-input-group { display: flex; gap: 0.5rem; }
+        .promo-input { flex: 1; padding: 0.65rem 1rem; border: 1.5px solid #e5e7eb; border-radius: 0.6rem; font-size: 0.9rem; font-weight: 600; color: #1f2937; transition: all 0.2s; background: #f9fafb; }
+        .promo-input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(253,203,0,0.15); background: white; }
+        .promo-input::placeholder { color: #9ca3af; font-weight: 400; }
+        .promo-btn { background: var(--color-dark-red); color: white; border: none; padding: 0.65rem 1rem; border-radius: 0.6rem; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .promo-btn:hover { background: #d10505; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(185,4,4,0.3); }
+        .promo-applied { display: none; align-items: center; gap: 0.4rem; background: rgba(5,150,105,0.1); border: 1px solid rgba(5,150,105,0.3); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.8rem; font-weight: 600; color: #059669; margin-top: 0.5rem; }
+        .promo-applied.show { display: flex; animation: scaleIn 0.3s ease; }
+        .promo-remove { background: none; border: none; padding: 0; color: #9ca3af; cursor: pointer; margin-left: auto; transition: color 0.2s; font-size: 0.75rem; }
+        .promo-remove:hover { color: var(--color-dark-red); transform: none; box-shadow: none; }
+
+        /* Action buttons */
+        .btn-group { padding: 1rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        .btn { padding: 0.9rem 1.5rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: all 0.3s; border: none; width: 100%; }
+        .btn-checkout { background: var(--gradient-orange); color: white; font-size: 1rem; }
+        .btn-checkout:hover { background: var(--gradient-orange-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(243,114,44,0.4); }
+        .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-continue { background: transparent; border: 1.5px solid var(--color-gold); color: var(--color-dark-red); }
+        .btn-continue:hover { background: rgba(253,203,0,0.1); box-shadow: 0 4px 12px rgba(253,203,0,0.2); transform: translateY(-1px); }
+
+        /* Trust badges */
+        .trust-badges { padding: 0 1.5rem 1.5rem; display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
+        .trust-badge { text-align: center; }
+        .trust-badge-icon { width: 36px; height: 36px; background: rgba(243,114,44,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.3rem; }
+        .trust-badge-icon svg { color: var(--color-orange-1); }
+        .trust-badge-text { font-size: 0.65rem; font-weight: 600; color: #6b7280; line-height: 1.3; }
+
+        /* ============================================
+           UPSELL / RECOMMENDATIONS
+        ============================================ */
+        .reco-section { margin-top: 2rem; animation: fadeInUp 0.5s ease 0.4s both; }
+        .reco-header { font-family: var(--font-primary); font-size: 1.5rem; color: var(--color-gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .reco-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+        .reco-card { background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: all 0.3s; border: 1px solid #f3f4f6; }
+        .reco-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(243,114,44,0.15); border-color: rgba(253,203,0,0.3); }
+        .reco-img { width: 100%; height: 100px; object-fit: cover; }
+        .reco-body { padding: 0.6rem 0.75rem; }
+        .reco-name { font-size: 0.8rem; font-weight: 700; color: #1f2937; margin-bottom: 0.3rem; }
+        .reco-price { font-size: 0.9rem; font-weight: 800; color: var(--color-dark-red); margin-bottom: 0.5rem; }
+        .reco-add { width: 100%; padding: 0.4rem; background: var(--gradient-orange); color: white; font-size: 0.75rem; font-weight: 700; border-radius: 0.4rem; border: none; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.3rem; }
+        .reco-add:hover { background: var(--gradient-orange-hover); transform: none; box-shadow: none; }
+
+        /* ============================================
+           MODALS
+        ============================================ */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+        .modal { background: white; border-radius: 1.25rem; padding: 2rem; max-width: 380px; width: 90%; text-align: center; animation: zoomIn 0.3s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .modal-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+        .modal-icon.danger { background: rgba(185,4,4,0.1); color: var(--color-dark-red); }
+        .modal-icon.warn { background: rgba(253,203,0,0.15); color: var(--color-gold); }
+        .modal h3 { font-size: 1.2rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; }
+        .modal p { font-size: 0.9rem; color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6; }
+        .modal-btns { display: flex; gap: 0.75rem; }
+        .modal-btn { flex: 1; padding: 0.75rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; border: none; }
+        .modal-btn.cancel { background: #f3f4f6; color: #374151; border: 1.5px solid #e5e7eb; }
+        .modal-btn.cancel:hover { background: #e5e7eb; transform: none; box-shadow: none; }
+        .modal-btn.danger { background: var(--color-dark-red); color: white; }
+        .modal-btn.danger:hover { background: #d10505; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(185,4,4,0.3); }
+
+        /* ============================================
+           TOAST
+        ============================================ */
+        .toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; }
+        .toast {
+            background: white; border-radius: 0.75rem; padding: 0.85rem 1.1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-left: 4px solid var(--color-gold);
+            display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.875rem; font-weight: 600; color: #1f2937;
+            min-width: 260px; max-width: 340px;
+            animation: slideInRight 0.3s ease;
+        }
+        .toast.success { border-left-color: #059669; }
+        .toast.error { border-left-color: var(--color-dark-red); }
+        .toast.info { border-left-color: var(--color-orange-1); }
+        .toast-icon { flex-shrink: 0; }
+        .toast.success .toast-icon { color: #059669; }
+        .toast.error .toast-icon { color: var(--color-dark-red); }
+        .toast.info .toast-icon { color: var(--color-orange-1); }
+        .toast.exit { animation: slideOutRight 0.3s ease forwards; }
+
+        /* ============================================
+           FOOTER — exact clone of home page
+        ============================================ */
+        .footer { background: linear-gradient(to bottom, #111827, #000); color: white; }
+        .footer-container { max-width: 1280px; margin: 0 auto; padding: 3rem 1rem 4rem; }
+        .footer-main { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+        @media (min-width: 768px) { .footer-main { grid-template-columns: repeat(2,1fr); } }
+        @media (min-width: 992px) { .footer-main { grid-template-columns: repeat(4,1fr); } }
+        .footer-logo { display: flex; align-items: center; margin-bottom: 1rem; }
+        .footer-logo-icon { width: 48px; height: 48px; background: var(--gradient-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; }
+        .footer-logo-text { margin-left: 0.75rem; }
+        .footer-logo-title { font-family: var(--font-primary); font-size: 1.25rem; color: var(--color-gold); }
+        .footer-logo-subtitle { font-size: 0.875rem; color: #9ca3af; }
+        .footer-desc { color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.7; }
+        .footer-social { display: flex; gap: 0.75rem; }
+        .footer-social a { background: rgba(255,255,255,0.1); padding: 0.5rem; border-radius: 9999px; transition: all 0.3s; display: flex; }
+        .footer-social a:hover { background: var(--color-gold); transform: scale(1.2); }
+        .footer-links-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--color-gold); }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer-links li { transition: transform 0.2s; }
+        .footer-links li:hover { transform: translateX(4px); }
+        .footer-links a { color: rgba(255,255,255,0.85); font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--color-gold); }
+        .footer-contact-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; border-top: 1px solid #374151; padding-top: 1.5rem; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .footer-contact-grid { grid-template-columns: repeat(3,1fr); } }
+        .footer-contact-item { display: flex; align-items: center; gap: 0.75rem; }
+        .footer-contact-icon { background: var(--color-gold); padding: 0.6rem; border-radius: 9999px; flex-shrink: 0; display: flex; }
+        .footer-contact-label { font-size: 0.75rem; color: #9ca3af; }
+        .footer-contact-value { font-weight: 600; font-size: 0.9rem; color: white; transition: color 0.2s; }
+        .footer-contact-value:hover { color: var(--color-gold); }
+        .footer-copyright { border-top: 1px solid #374151; padding-top: 1.5rem; text-align: center; color: rgba(255,255,255,0.85); font-size: 0.85rem; }
+
+        /* ============================================
+           SCROLL TO TOP
+        ============================================ */
+        .scroll-to-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 50; width: 44px; height: 44px; border-radius: 9999px; background: var(--gradient-orange); color: white; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-button-hover); opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.3s; border: none; cursor: pointer; }
+        .scroll-to-top.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .scroll-to-top:hover { background: var(--gradient-orange-hover); transform: scale(1.1) translateY(-3px); }
+
+        /* ============================================
+           ANIMATIONS
+        ============================================ */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes logoScale { from { transform: scale(0) rotate(-180deg); } to { transform: scale(1) rotate(0); } }
+        @keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOutRight { to { transform: translateX(120%); opacity: 0; } }
+        @keyframes slideOutLeft { to { transform: translateX(-100%); opacity: 0; } }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+        .removing { animation: slideOutLeft 0.35s ease forwards; }
+        .pulse { animation: pulse 0.5s ease; }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo"><span class="loading-logo-text">S&C</span></div>
+            <h1 class="loading-title">Saravana & Co</h1>
+            <p class="loading-subtitle">Premium Quality Papads</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-container">
+                <a href="/" class="header-logo-wrapper">
+                    <div class="header-logo-icon">S&C</div>
+                    <div class="header-logo-text">
+                        <div class="header-logo-title">Saravana & Co</div>
+                        <div class="header-logo-subtitle">Papad Shop</div>
+                    </div>
+                </a>
+                <nav class="header-nav">
+                    <a href="#" class="header-nav-link">Home</a>
+                    <a href="#" class="header-nav-link">About</a>
+                    <a href="#" class="header-nav-link">Products</a>
+                    <a href="#" class="header-nav-link">Contact</a>
+                </nav>
+                <div class="header-search">
+                    <svg class="header-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="text" class="header-search-input" placeholder="Search papads...">
+                </div>
+                <div class="header-actions">
+                    <a href="#" class="header-action-btn">Sign Up</a>
+                    <button class="header-icon-btn header-cart" aria-label="Shopping cart" style="position:relative">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        <span class="header-cart-badge" id="cartBadge">3</span>
+                    </button>
+                    <button class="header-icon-btn header-mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <svg id="menuIconOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                        <svg id="menuIconClose" style="display:none" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <nav class="header-mobile-menu" id="mobileMenu">
+                <a href="#" class="header-mobile-menu-link">Home</a>
+                <a href="#" class="header-mobile-menu-link">About</a>
+                <a href="#" class="header-mobile-menu-link">Products</a>
+                <a href="#" class="header-mobile-menu-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <div class="page-banner">
+        <div class="page-banner-content">
+            <p class="page-banner-eyebrow">Review your selection</p>
+            <h1>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:0.4rem"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                Your Shopping Cart
+            </h1>
+            <p>Fresh papads, handcrafted with love — ready to order</p>
+            <div class="breadcrumb">
+                <a href="#">Home</a>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <a href="#">Products</a>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <span>Cart</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main class="main-wrapper">
+        <div class="cart-layout">
+
+            <!-- Left: Cart Items -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                            Order Items
+                        </div>
+                        <span class="card-subtitle" id="itemCountText">3 items in cart</span>
+                    </div>
+                    <div class="card-body" style="padding: 1rem 1rem 0;">
+                        <div class="table-header-row">
+                            <span>Product</span>
+                            <span>Details</span>
+                            <span style="text-align:center">Unit Price</span>
+                            <span style="text-align:center">Quantity</span>
+                            <span style="text-align:center">Subtotal</span>
+                            <span style="text-align:center">Remove</span>
+                        </div>
+                        <div id="cartItemsContainer"></div>
+                    </div>
+                    <div class="cart-footer">
+                        <span class="cart-item-count" id="cartFooterCount"><strong>3</strong> items · Subtotal: <strong id="cartFooterSubtotal">₹1,020.00</strong></span>
+                        <button class="btn-clear-cart" id="clearCartBtn" onclick="showModal('clearCart')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="reco-section" id="recoSection">
+                    <div class="reco-header">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        You Might Also Like
+                    </div>
+                    <div class="reco-grid" id="recoGrid"></div>
+                </div>
+            </div>
+
+            <!-- Right: Summary -->
+            <div>
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                        <h2>Order Summary</h2>
+                    </div>
+                    <div class="summary-body">
+                        <div class="summary-row">
+                            <span class="summary-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/></svg>
+                                Subtotal
+                            </span>
+                            <span class="summary-value" id="summarySubtotal">₹1,020.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                                Delivery Charge
+                            </span>
+                            <span class="summary-value" id="summaryDelivery">₹50.00</span>
+                        </div>
+                        <div class="summary-row discount" id="discountRow" style="display:none">
+                            <span class="summary-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                Discount
+                            </span>
+                            <span class="summary-value" id="summaryDiscount" style="color:#059669">-₹0.00</span>
+                        </div>
+                        <div class="summary-total">
+                            <div class="summary-total-label">Total Amount</div>
+                            <div class="summary-total-amount" id="summaryTotal">₹1,070.00</div>
+                            <div class="summary-total-note">Inclusive of all taxes</div>
+                        </div>
+                    </div>
+
+                    <!-- Promo Code -->
+                    <div class="promo-wrap">
+                        <div class="promo-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                            Promo Code
+                        </div>
+                        <div class="promo-input-group">
+                            <input type="text" class="promo-input" id="promoInput" placeholder="Enter code (try SAVE10)">
+                            <button class="promo-btn" onclick="applyPromo()">Apply</button>
+                        </div>
+                        <div class="promo-applied" id="promoApplied">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span id="promoAppliedText">SAVE10 applied — 10% off!</span>
+                            <button class="promo-remove" onclick="removePromo()">✕ Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="btn-group">
+                        <button class="btn btn-checkout" id="checkoutBtn" onclick="proceedCheckout()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            Proceed to Checkout
+                        </button>
+                        <button class="btn btn-continue" onclick="continueShopping()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                            Continue Shopping
+                        </button>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                            </div>
+                            <div class="trust-badge-text">Secure Checkout</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                            </div>
+                            <div class="trust-badge-text">Fast Delivery</div>
+                        </div>
+                        <div class="trust-badge">
+                            <div class="trust-badge-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+                            </div>
+                            <div class="trust-badge-text">Easy Returns</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div>
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">S&C</div>
+                        <div class="footer-logo-text">
+                            <div class="footer-logo-title">Saravana & Co</div>
+                            <div class="footer-logo-subtitle">Papad Shop</div>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Both retail and wholesale traders of premium quality papads, handcrafted with traditional methods since generations.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                        <a href="#" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></a>
+                        <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="white"/></svg></a>
+                    </div>
+                </div>
+                <div>
+                    <div class="footer-links-title">Quick Links</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li><li><a href="#">About Us</a></li>
+                        <li><a href="#">Products</a></li><li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-links-title">Categories</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Plain Papad</a></li><li><a href="#">Masala Papad</a></li>
+                        <li><a href="#">Garlic Papad</a></li><li><a href="#">Special Varieties</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-links-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms & Conditions</a></li><li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Shipping Policy</a></li><li><a href="#">Return Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-contact-grid">
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                    <div><p class="footer-contact-label">Call Us</p><a href="tel:+919876543210" class="footer-contact-value">+91 98765 43210</a></div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+                    <div><p class="footer-contact-label">Email Us</p><a href="mailto:info@saravanapapad.com" class="footer-contact-value">info@saravanapapad.com</a></div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b90404" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                    <div><p class="footer-contact-label">Visit Us</p><p class="footer-contact-value">Tamil Nadu, India</p></div>
+                </div>
+            </div>
+            <div class="footer-copyright">© 2026 Saravana & Co Papads. All rights reserved. | Designed with ❤️ for quality</div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Clear Cart Modal -->
+    <div class="modal-overlay" id="clearCartModal">
+        <div class="modal">
+            <div class="modal-icon warn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <h3>Clear Entire Cart?</h3>
+            <p>All <strong id="clearModalCount">3</strong> items will be removed. This action cannot be undone.</p>
+            <div class="modal-btns">
+                <button class="modal-btn cancel" onclick="closeModal('clearCart')">Keep Items</button>
+                <button class="modal-btn danger" onclick="clearCart()">Yes, Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove Item Modal -->
+    <div class="modal-overlay" id="removeItemModal">
+        <div class="modal">
+            <div class="modal-icon danger">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <h3>Remove Item?</h3>
+            <p id="removeModalText">Remove this item from your cart?</p>
+            <div class="modal-btns">
+                <button class="modal-btn cancel" onclick="closeModal('removeItem')">Keep It</button>
+                <button class="modal-btn danger" onclick="confirmRemove()">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // Cart Storage Key
+        // ============================================================
+        const CART_KEY = 'pappad_shop_cart';
+
+        // ============================================================
+        // Recommendations (for upsell section)
+        // ============================================================
+        const recommendations = [
+            { id: 101, name: "Pepper Pappad", price: 260, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&h=200&fit=crop" },
+            { id: 102, name: "Cumin Pappad", price: 200, image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&h=200&fit=crop" },
+            { id: 103, name: "Onion Pappad", price: 280, image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200&h=200&fit=crop" },
+            { id: 104, name: "Jeera Pappad", price: 220, image: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=200&h=200&fit=crop" }
+        ];
+
+        const PROMO_CODES = { 'SAVE10': { type: 'pct', val: 10 }, 'SAVE20': { type: 'pct', val: 20 }, 'WELCOME50': { type: 'flat', val: 50 } };
+
+        let discount = 0;
+        let appliedCode = '';
+        let itemToRemove = null;
+
+        // ============================================================
+        // CART FUNCTIONS - Using localStorage
+        // ============================================================
+        function getCart() {
+            const cartData = localStorage.getItem(CART_KEY);
+            return cartData ? JSON.parse(cartData) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        // ============================================================
+        // RENDER CART
+        // ============================================================
+        function renderCart() {
+            const cart = getCart();
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon-wrap">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        </div>
+                        <h3>Your cart is empty</h3>
+                        <p>Discover our delicious range of handcrafted papads!</p>
+                        <button class="btn btn-checkout" style="width:auto;padding:0.75rem 1.5rem" onclick="continueShopping()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/></svg>
+                            Browse Products
+                        </button>
+                    </div>`;
+                document.getElementById('clearCartBtn').disabled = true;
+                document.getElementById('checkoutBtn').disabled = true;
+                document.getElementById('recoSection').style.display = 'none';
+            } else {
+                document.getElementById('clearCartBtn').disabled = false;
+                document.getElementById('checkoutBtn').disabled = false;
+                document.getElementById('recoSection').style.display = 'block';
+                container.innerHTML = cart.map((item, i) => `
+                    <div class="cart-item" id="item-${item.id}" style="animation-delay:${i*0.07}s">
+                        <div class="item-img-wrap">
+                            <img src="${item.image}" alt="${item.name}" class="item-img"
+                                onerror="this.src='https://placehold.co/80x80/f3722c/white?text=P'">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-sku">SKU: PP-${item.id.toString().padStart(3, '0')}</div>
+                            <div class="item-tag">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+                                ${item.unit || 'per 150g/kg'}
+                            </div>
+                        </div>
+                        <div class="item-unit-price">
+                            <div>₹${item.price}</div>
+                            <div class="item-unit-label">per unit</div>
+                        </div>
+                        <div class="qty-selector">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, -1)" ${item.qty <= 1 ? 'style="opacity:0.4"' : ''}>−</button>
+                            <input type="number" class="qty-input" value="${item.qty}" min="1"
+                                onchange="setQty(${item.id}, this.value)" onblur="setQty(${item.id}, this.value)">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                        </div>
+                        <div class="item-subtotal">
+                            <div class="item-subtotal-amount">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+                            <div class="item-subtotal-label">subtotal</div>
+                        </div>
+                        <button class="remove-btn" onclick="showRemoveModal(${item.id}, '${item.name.replace(/'/g, "\\'")}')" title="Remove item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        </button>
+                    </div>`).join('');
+            }
+            updateSummary();
+        }
+
+        // ============================================================
+        // RECOMMENDATIONS
+        // ============================================================
+        function renderRecommendations() {
+            const grid = document.getElementById('recoGrid');
+            grid.innerHTML = recommendations.map(p => `
+                <div class="reco-card">
+                    <img src="${p.image}" alt="${p.name}" class="reco-img"
+                        onerror="this.src='https://placehold.co/160x100/f3722c/white?text=P'">
+                    <div class="reco-body">
+                        <div class="reco-name">${p.name}</div>
+                        <div class="reco-price">₹${p.price}/kg</div>
+                        <button class="reco-add" onclick="addRecoItem(${p.id})">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function addRecoItem(id) {
+            const item = recommendations.find(r => r.id === id);
+            if (!item) return;
+            
+            const cart = getCart();
+            const exists = cart.find(c => c.id === id);
+            if (exists) { 
+                exists.qty++; 
+                saveCart(cart);
+                renderCart();
+                toast('Quantity updated!', 'success'); 
+            } else {
+                cart.push({ id: item.id, name: item.name, sku: `RP-${id}`, unit: 'per kg', price: item.price, qty: 1, image: item.image });
+                saveCart(cart);
+                renderCart();
+                toast(`${item.name} added to cart!`, 'success');
+            }
+        }
+
+        // ============================================================
+        // QUANTITY CONTROLS
+        // ============================================================
+        function changeQty(id, delta) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            const newQty = item.qty + delta;
+            if (newQty < 1) return;
+            item.qty = newQty;
+            saveCart(cart);
+            renderCart();
+            pulseItem(id);
+            toast('Quantity updated', 'info');
+        }
+        function setQty(id, val) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            const n = parseInt(val) || 1;
+            item.qty = Math.max(1, n);
+            saveCart(cart);
+            renderCart();
+        }
+        function pulseItem(id) {
+            const el = document.getElementById(`item-${id}`);
+            if (el) { el.classList.add('pulse'); setTimeout(() => el.classList.remove('pulse'), 500); }
+        }
+
+        // ============================================================
+        // REMOVE ITEM
+        // ============================================================
+        function showRemoveModal(id, name) {
+            itemToRemove = id;
+            document.getElementById('removeModalText').innerHTML = `Remove <strong>"${name}"</strong> from your cart?`;
+            showModal('removeItem');
+        }
+        function confirmRemove() {
+            if (!itemToRemove) return;
+            const el = document.getElementById(`item-${itemToRemove}`);
+            if (el) {
+                el.classList.add('removing');
+                setTimeout(() => {
+                    let cart = getCart();
+                    cart = cart.filter(i => i.id !== itemToRemove);
+                    saveCart(cart);
+                    itemToRemove = null;
+                    renderCart();
+                    toast('Item removed from cart', 'success');
+                    closeModal('removeItem');
+                }, 350);
+            }
+        }
+
+        // ============================================================
+        // CLEAR CART
+        // ============================================================
+        function clearCart() {
+            const cart = getCart();
+            document.getElementById('clearModalCount').textContent = cart.length;
+            
+            localStorage.removeItem(CART_KEY);
+            discount = 0; appliedCode = '';
+            document.getElementById('promoApplied').classList.remove('show');
+            document.getElementById('discountRow').style.display = 'none';
+            renderCart();
+            updateCartBadge();
+            toast('Cart cleared successfully', 'success');
+            closeModal('clearCart');
+        }
+
+        // ============================================================
+        // PROMO CODE
+        // ============================================================
+        function applyPromo() {
+            const cart = getCart();
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            if (!code) { toast('Please enter a promo code', 'error'); return; }
+            const promo = PROMO_CODES[code];
+            if (!promo) { toast('Invalid promo code', 'error'); return; }
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            discount = promo.type === 'pct' ? subtotal * (promo.val / 100) : promo.val;
+            appliedCode = code;
+            document.getElementById('promoInput').value = '';
+            const msg = promo.type === 'pct' ? `${code} applied — ${promo.val}% off!` : `${code} applied — ₹${promo.val} off!`;
+            document.getElementById('promoAppliedText').textContent = msg;
+            document.getElementById('promoApplied').classList.add('show');
+            document.getElementById('discountRow').style.display = 'flex';
+            updateSummary();
+            toast(msg, 'success');
+        }
+        function removePromo() {
+            discount = 0; appliedCode = '';
+            document.getElementById('promoApplied').classList.remove('show');
+            document.getElementById('discountRow').style.display = 'none';
+            updateSummary();
+            toast('Promo code removed', 'info');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('promoInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyPromo(); });
+        });
+
+        // ============================================================
+        // SUMMARY
+        // ============================================================
+        function fmt(n) { return `₹${n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`; }
+        
+        function updateCartBadge() {
+            const cart = getCart();
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) badge.textContent = count;
+        }
+        
+        function updateSummary() {
+            const cart = getCart();
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const delivery = cart.length > 0 ? (subtotal >= 500 ? 0 : 50) : 0;
+            const total = Math.max(0, subtotal + delivery - discount);
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+
+            document.getElementById('summarySubtotal').textContent = fmt(subtotal);
+            document.getElementById('summaryDelivery').innerHTML = delivery === 0
+                ? `<span style="color:#059669;font-weight:700">FREE</span>` : fmt(delivery);
+            document.getElementById('summaryDiscount').textContent = `-${fmt(discount)}`;
+            document.getElementById('summaryTotal').textContent = fmt(total);
+            document.getElementById('itemCountText').textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''} in cart`;
+            document.getElementById('cartBadge').textContent = count;
+            document.getElementById('cartFooterCount').innerHTML = `<strong>${cart.length}</strong> items · Subtotal: <strong id="cartFooterSubtotal">${fmt(subtotal)}</strong>`;
+            document.getElementById('clearModalCount').textContent = cart.length;
+        }
+
+        // ============================================================
+        // CHECKOUT
+        // ============================================================
+        function proceedCheckout() {
+            const cart = getCart();
+            if (!cart.length) { toast('Your cart is empty!', 'error'); return; }
+            toast('Proceeding to checkout...', 'info');
+            setTimeout(() => alert('Checkout page will load here!'), 600);
+        }
+        function continueShopping() {
+            toast('Redirecting to products...', 'info');
+            // Redirect to home page products
+            window.location.href = '../home_page/index.html';
+        }
+
+        // ============================================================
+        // MODAL HELPERS
+        // ============================================================
+        function showModal(name) { document.getElementById(`${name}Modal`).classList.add('active'); }
+        function closeModal(name) { document.getElementById(`${name}Modal`).classList.remove('active'); }
+        document.querySelectorAll && document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { closeModal('clearCart'); closeModal('removeItem'); }
+        });
+        document.addEventListener('click', e => {
+            ['clearCartModal','removeItemModal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && e.target === el) closeModal(id.replace('Modal',''));
+            });
+        });
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function toast(msg, type = 'info') {
+            const icons = {
+                success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+                error: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>`,
+                info: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>`
+            };
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${msg}</span>`;
+            document.getElementById('toastContainer').appendChild(t);
+            setTimeout(() => { t.classList.add('exit'); setTimeout(() => t.remove(), 350); }, 3000);
+        }
+
+        // ============================================================
+        // MOBILE MENU
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('mobileMenuToggle');
+            const menu = document.getElementById('mobileMenu');
+            const open = document.getElementById('menuIconOpen');
+            const close = document.getElementById('menuIconClose');
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('open');
+                    const isOpen = menu.classList.contains('open');
+                    if (open) open.style.display = isOpen ? 'none' : 'block';
+                    if (close) close.style.display = isOpen ? 'block' : 'none';
+                });
+            }
+        });
+
+        // ============================================================
+        // SCROLL TO TOP
+        // ============================================================
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollToTop');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+        document.getElementById('scrollToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ============================================================
+        // LOADING SCREEN
+        // ============================================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const ls = document.getElementById('loadingScreen');
+                ls.classList.add('fade-out');
+                setTimeout(() => ls.remove(), 500);
+            }, 800);
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        renderCart();
+        renderRecommendations();
+        updateCartBadge();
+    </script>
+    
+    
+</body>
+</html>
