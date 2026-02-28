@@ -154,4 +154,29 @@ export function initHeader() {
   
   // Also check login state when page becomes visible (for tab switching)
   document.addEventListener('visibilitychange', checkLoginState);
+
+  // Cart icon click handler - redirect to shopping cart page
+  const cartIconBtn = document.querySelector('.header-cart');
+  if (cartIconBtn) {
+    cartIconBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '../shopping_cart_page/shopping_cart.html';
+    });
+  }
+
+  // Also update cart badge on page load
+  updateCartBadgeOnLoad();
 }
+
+// Update cart badge on page load
+function updateCartBadgeOnLoad() {}
+  const CART_KEY = 'pappad_shop_cart';
+  const cartData = localStorage.getItem(CART_KEY);
+  const cart = cartData ? JSON.parse(cartData) : [];
+  const count = cart.reduce((total, item) => total + item.qty, 0);
+  
+  const badge = document.getElementById('cartBadge');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }

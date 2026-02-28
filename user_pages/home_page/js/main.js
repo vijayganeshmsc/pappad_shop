@@ -12,6 +12,7 @@ import { initCategories } from './components/categories.js';
 import { initTestimonials } from './components/testimonials.js';
 import { initNewsletter } from './components/newsletter.js';
 import { initScrollAnimations } from './utils/animations.js';
+import { initFloatingCart } from './utils/floating-cart.js';
 
 // Initialize all components when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,4 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTestimonials();
     initNewsletter();
     initScrollAnimations();
+    
+    // Initialize floating cart button
+    initFloatingCart();
 });

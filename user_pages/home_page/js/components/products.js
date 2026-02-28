@@ -114,7 +114,7 @@ function createProductCard(product, index) {
                 </div>
 
                 <!-- Add to Cart Button -->
-                <button class="product-add-to-cart" onclick="handleAddToCart(${product.id})">
+                <button class="product-add-to-cart" onclick="handleAddToCart(${product.id}, event)">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="8" cy="21" r="1"></circle>
                         <circle cx="19" cy="21" r="1"></circle>
@@ -128,13 +128,104 @@ function createProductCard(product, index) {
 }
 
 // Handle add to cart click
-window.handleAddToCart = function(productId) {
+window.handleAddToCart = function(productId, event) {
     const product = products.find(p => p.id === productId);
     if (product) {
         addToCart(product);
+        
+        // Get the button element that was clicked
+        const button = event ? event.target.closest('.product-add-to-cart') : document.querySelector(`[onclick*="${productId}"]`);
+        
+        // Trigger flying animation if button exists
+        if (button) {
+            createFlyingAnimation(button, product);
+        }
+        
         showToast(`${product.name} added to cart!`, 'success');
     }
 };
+
+// Create flying product animation
+function createFlyingAnimation(button, product) {
+    // Get button position
+    const buttonRect = button.getBoundingClientRect();
+    const startX = buttonRect.left + buttonRect.width / 2;
+    const startY = buttonRect.top + buttonRect.height / 2;
+    
+    // Get floating cart button position
+    const floatingCart = document.getElementById('floatingCartBtn');
+    if (!floatingCart) return;
+    
+    const cartRect = floatingCart.getBoundingClientRect();
+    const endX = cartRect.left + cartRect.width / 2;
+    const endY = cartRect.top + cartRect.height / 2;
+    
+    // Create flying product element
+    const flyingProduct = document.createElement('div');
+    flyingProduct.className = 'flying-product';
+    flyingProduct.innerHTML = `<img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/50x50/f3722c/white?text=P'">`;
+    flyingProduct.style.left = startX + 'px';
+    flyingProduct.style.top = startY + 'px';
+    flyingProduct.style.transform = 'translate(-50%, -50%)';
+    document.body.appendChild(flyingProduct);
+    
+    // Create arrow element
+    const arrow = document.createElement('div');
+    arrow.className = 'flying-arrow';
+    arrow.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 18 6-6-6-6"></path>
+    </svg>`;
+    arrow.style.left = startX + 'px';
+    arrow.style.top = (startY - 40) + 'px';
+    document.body.appendChild(arrow);
+    
+    // Animate to cart
+    const duration = 800;
+    const startTime = performance.now();
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        // Update position
+        const currentX = startX + (endX - startX) * easeProgress;
+        const currentY = startY + (endY - startY) * easeProgress;
+        
+        flyingProduct.style.left = currentX + 'px';
+        flyingProduct.style.top = currentY + 'px';
+        
+        // Update arrow position (slightly ahead)
+        const arrowProgress = Math.max(0, progress - 0.1);
+        const arrowX = startX + (endX - startX) * arrowProgress;
+        const arrowY = startY + (endY - startY) * arrowProgress - 40;
+        arrow.style.left = arrowX + 'px';
+        arrow.style.top = arrowY + 'px';
+        
+        // Scale effect
+        const scale = 1 + Math.sin(progress * Math.PI) * 0.3;
+        flyingProduct.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            // Animation complete - remove elements
+            flyingProduct.remove();
+            arrow.remove();
+            
+            // Bump the cart badge
+            const badge = document.getElementById('floatingCartBadge');
+            if (badge) {
+                badge.classList.add('bump');
+                setTimeout(() => badge.classList.remove('bump'), 400);
+            }
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
 
 export function initProducts() {
     const productsGrid = document.getElementById('productsGrid');

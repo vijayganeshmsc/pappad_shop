@@ -16,8 +16,8 @@ export function initLoadingScreen() {
         }
     }
 
-    // Hide loading screen after 2 seconds
-    setTimeout(hideLoadingScreen, 2000);
+    // Hide loading screen after 1 second
+    setTimeout(hideLoadingScreen, 1000);
 
     // Fallback: Force hide after 5 seconds in case of issues
     setTimeout(hideLoadingScreen, 5000);

@@ -1622,6 +1622,134 @@ img {
 }
 
 /* ============================================
+   FLOATING CART BUTTON
+   ============================================ */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 6rem;
+  z-index: 100;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f3722c, #f8961e);
+  border: 3px solid white;
+  box-shadow: 0 8px 25px rgba(243, 114, 44, 0.5), 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: floatCart 3s ease-in-out infinite;
+}
+
+.floating-cart-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 35px rgba(243, 114, 44, 0.6), 0 6px 15px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #f8961e, #f3722c);
+}
+
+.floating-cart-btn svg {
+  color: white;
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.floating-cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #b90404;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 3px 8px rgba(185, 4, 4, 0.4);
+  transition: transform 0.3s ease;
+  padding: 0 4px;
+}
+
+.floating-cart-badge.bump {
+  animation: bumpBadge 0.4s ease;
+}
+
+@keyframes floatCart {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes bumpBadge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   FLYING PRODUCT ANIMATION
+   ============================================ */
+.flying-product {
+  position: fixed;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.flying-product img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Arrow animation following flying product */
+.flying-arrow {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  animation: arrowMove 0.5s ease-in-out infinite;
+}
+
+.flying-arrow svg {
+  width: 30px;
+  height: 30px;
+  color: #f3722c;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes arrowMove {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(15deg);
+  }
+}
+
+/* ============================================
    17. ANIMATIONS
    ============================================ */
 @keyframes spin {
