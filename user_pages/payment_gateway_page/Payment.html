@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saravana & Co – Secure Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #fdcb00;
+      --dark-red: #b90404;
+      --orange-start: #F3722C;
+      --orange-end: #F8961E;
+      --white: #fff;
+      --cream: #FFF3E0;
+      --card-bg: rgba(255,255,255,0.12);
+      --input-bg: rgba(255,255,255,0.2);
+      --input-border: rgba(255,255,255,0.2);
+      --card-border: rgba(225,255,255,0.15);
+      --font-display: 'Dancing Script', cursive;
+      --font-body: 'Roboto', sans-serif;
+      --font-heading: 'Montserrat', sans-serif;
+    }
+
+    ::selection { background: rgba(253,203,0,0.3); color: #000; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #1a0a00;
+      overflow-x: hidden;
+    }
+
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(243,114,44,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(248,150,30,0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 80%, rgba(179,4,4,0.2) 0%, transparent 50%),
+        linear-gradient(160deg, #2d0f00 0%, #1a0600 40%, #0d0300 100%);
+    }
+    .bg-pattern {
+      position: fixed; inset: 0; z-index: 0; opacity: 0.04;
+      background-image: repeating-linear-gradient(45deg, #fdcb00 0, #fdcb00 1px, transparent 0, transparent 50%);
+      background-size: 30px 30px;
+    }
+
+    nav {
+      position: relative; z-index: 10;
+      background: linear-gradient(90deg, #e06000, #F8961E);
+      display: flex; align-items: center;
+      padding: 0 2rem; height: 72px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, #fdcb00, #F3722C);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 1.3rem; color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .nav-text h1 { font-family: var(--font-display); font-size: 1.4rem; color: #fff; line-height: 1.1; }
+    .nav-text span { font-size: 0.7rem; color: rgba(255,255,255,0.85); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-body); }
+
+    main {
+      position: relative; z-index: 1;
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .payment-wrapper {
+      width: 100%; max-width: 920px;
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 1.5rem; align-items: start;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ORDER SUMMARY */
+    .order-summary {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; backdrop-filter: blur(8px);
+      padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .summary-title {
+      font-family: var(--font-heading); font-size: 1.2rem; color: var(--gold);
+      font-weight: 700; margin-bottom: 1.2rem;
+    }
+    .order-items { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+    .order-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 10px 12px; border-radius: 12px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .item-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--orange-start), var(--orange-end));
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .item-info { flex: 1; }
+    .item-name { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600; color: var(--cream); }
+    .item-qty { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .item-price { font-size: 0.88rem; font-weight: 800; color: var(--gold); }
+    .summary-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.1rem 0; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; }
+    .summary-row span { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+    .summary-row strong { font-size: 0.83rem; color: var(--cream); font-weight: 600; }
+    .summary-total span { font-size: 0.95rem; font-weight: 800; color: var(--white); }
+    .summary-total strong { font-size: 1.25rem; font-weight: 800; color: var(--gold); }
+    .trust-badges { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 1.4rem; }
+    .badge {
+      display: flex; align-items: center; gap: 5px; font-size: 0.68rem;
+      color: rgba(255,255,255,0.6); font-weight: 600;
+      background: rgba(255,255,255,0.07); border-radius: 20px; padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .badge svg { width: 11px; height: 11px; fill: #fdcb00; }
+
+    /* PAYMENT FORM */
+    .payment-form-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; backdrop-filter: blur(8px);
+      padding: 30px 28px 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .form-title {
+      font-family: var(--font-heading); font-size: 1.45rem; color: var(--gold);
+      font-weight: 800; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+    }
+
+    /* TABS — no numbers, proper spacing */
+    .pay-methods {
+      display: flex; gap: 0.9rem; margin-bottom: 1.8rem;
+    }
+    .pay-method {
+      flex: 1; padding: 14px 8px 12px; border-radius: 14px; cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      transition: 0.3s ease; color: rgba(255,255,255,0.5);
+      font-size: 0.76rem; font-weight: 700; font-family: var(--font-heading);
+      letter-spacing: 0.03em;
+    }
+    .pay-method svg { width: 20px; height: 20px; fill: currentColor; }
+    .pay-method.active { border-color: var(--gold); background: rgba(253,203,0,0.1); color: var(--gold); }
+    .pay-method:hover:not(.active) { border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); }
+
+    /* PANELS */
+    .method-panel { display: none; animation: fadeUp 0.3s ease both; }
+    .method-panel.active { display: block; }
+
+    /* SECTION LABELS */
+    .section-label {
+      font-family: var(--font-heading); font-size: 0.66rem; font-weight: 800;
+      color: rgba(253,203,0,0.6); letter-spacing: 0.14em;
+      text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+
+    /* INPUTS — placeholder centered */
+    .input-group { position: relative; margin-bottom: 0.95rem; }
+    .input-group input {
+      width: 100%;
+      padding: 0 44px 0 16px;
+      height: 48px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px; color: var(--white);
+      font-family: var(--font-body); font-size: 0.92rem; font-weight: 400;
+      outline: none; transition: 0.3s ease;
+      display: flex; align-items: center;
+    }
+    .input-group input::placeholder { color: rgba(255,255,255,0.4); }
+    .input-group input:focus::placeholder { color: transparent; }
+    .input-group input:focus { border-color: var(--gold); box-shadow: 0 0 16px rgba(253,203,0,0.12); }
+    .input-group .field-icon {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      fill: rgba(255,255,255,0.32); width: 16px; height: 16px; pointer-events: none;
+    }
+    input:-webkit-autofill { -webkit-box-shadow: 0 0 0 100px rgba(255,255,255,0.15) inset; -webkit-text-fill-color: #fff; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    /* UPI APPS — smaller */
+    .upi-apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+    .upi-app-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 7px 3px 6px; border-radius: 10px; cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.55); font-size: 0.58rem; font-weight: 500;
+      font-family: var(--font-body); transition: 0.25s;
+    }
+    .upi-app-btn.active { border-color: var(--gold); background: rgba(253,203,0,0.1); color: var(--gold); }
+    .upi-app-btn:hover:not(.active) { border-color: rgba(255,255,255,0.3); color: var(--cream); }
+    .upi-app-icon {
+      width: 30px; height: 24px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .upi-hint { font-size: 0.68rem; color: rgba(255,255,255,0.32); font-family: var(--font-body); margin-top: 0.3rem; }
+    .upi-status { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; }
+
+    /* COD */
+    .cod-unavailable {
+      text-align: center; padding: 2rem 1rem;
+      background: rgba(255,255,255,0.05); border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.15);
+    }
+    .cod-emoji { font-size: 3.2rem; margin-bottom: 0.75rem; }
+    .cod-title { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--cream); margin-bottom: 0.55rem; }
+    .cod-msg { font-family: var(--font-body); font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 1.1rem; }
+    .cod-alternatives { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+    .cod-alternatives span { font-size: 0.72rem; color: rgba(255,255,255,0.38); font-family: var(--font-body); }
+    .cod-alternatives button {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 5px 14px; color: var(--cream);
+      font-family: var(--font-body); font-size: 0.73rem; font-weight: 500;
+      cursor: pointer; transition: 0.2s;
+    }
+    .cod-alternatives button:hover { background: rgba(253,203,0,0.15); border-color: var(--gold); color: var(--gold); }
+
+    /* PAY BUTTON */
+    .btn-pay {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, var(--orange-start), var(--orange-end));
+      border: none; border-radius: 12px; cursor: pointer;
+      font-family: var(--font-heading); font-size: 1rem; font-weight: 800;
+      color: var(--dark-red); letter-spacing: 0.03em;
+      transition: 0.3s ease; margin-top: 1.2rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+      box-shadow: 0 4px 14px rgba(243,114,44,0.3);
+    }
+    .btn-pay:hover { background: linear-gradient(135deg, var(--orange-end), var(--orange-start)); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+    .btn-pay svg { width: 17px; height: 17px; fill: var(--dark-red); }
+    .btn-pay.hidden { display: none; }
+
+    footer {
+      position: relative; z-index: 1;
+      background: rgba(0,0,0,0.4); padding: 1rem;
+      text-align: center; font-size: 0.73rem; color: rgba(255,255,255,0.42);
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .payment-wrapper { grid-template-columns: 1fr; }
+      .order-summary { order: 2; }
+      .payment-form-card { order: 1; }
+    }
+    @media (max-width: 576px) {
+      .form-title { font-size: 1.25rem; }
+      nav { padding: 0 1rem; }
+      .pay-methods { gap: 0.5rem; }
+      main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-pattern"></div>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">S</div>
+    <div class="nav-text">
+      <h1>Saravana & Co</h1>
+      <span>Papad Shop</span>
+    </div>
+  </a>
+</nav>
+
+<main>
+  <div class="payment-wrapper">
+
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary">
+      <h2 class="summary-title">Order Summary</h2>
+      <ul class="order-items">
+        <li class="order-item">
+          <div class="item-icon">🫓</div>
+          <div class="item-info">
+            <div class="item-name">Urad Dal Papad (Pack of 5)</div>
+            <div class="item-qty">Qty: 2 × ₹85</div>
+          </div>
+          <div class="item-price">₹170</div>
+        </li>
+        <li class="order-item">
+          <div class="item-icon">🌶️</div>
+          <div class="item-info">
+            <div class="item-name">Spicy Masala Papad (Pack of 5)</div>
+            <div class="item-qty">Qty: 1 × ₹95</div>
+          </div>
+          <div class="item-price">₹95</div>
+        </li>
+        <li class="order-item">
+          <div class="item-icon">🧄</div>
+          <div class="item-info">
+            <div class="item-name">Garlic Papad Premium (Pack of 10)</div>
+            <div class="item-qty">Qty: 1 × ₹160</div>
+          </div>
+          <div class="item-price">₹160</div>
+        </li>
+      </ul>
+      <hr class="summary-divider"/>
+      <div class="summary-row"><span>Subtotal</span><strong>₹425</strong></div>
+      <div class="summary-row"><span>Delivery</span><strong>₹40</strong></div>
+      <div class="summary-row"><span>Discount (SARAVANA10)</span><strong style="color:#4caf50;">−₹42</strong></div>
+      <div class="summary-row"><span>GST (5%)</span><strong>₹21</strong></div>
+      <hr class="summary-divider"/>
+      <div class="summary-row summary-total">
+        <span>Total</span>
+        <strong>₹444</strong>
+      </div>
+      <div class="trust-badges">
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          Secure
+        </div>
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          100% Authentic
+        </div>
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          Easy Returns
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT FORM -->
+    <div class="payment-form-card">
+      <h2 class="form-title">Select a Payment Method</h2>
+
+      <div class="pay-methods">
+        <button class="pay-method active" data-method="upi" onclick="selectMethod(this)">
+          <svg viewBox="0 0 24 24"><path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/></svg>
+          UPI
+        </button>
+        <button class="pay-method" data-method="card" onclick="selectMethod(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+          Card
+        </button>
+        <button class="pay-method" data-method="cod" onclick="selectMethod(this)">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5S5.17 15.5 6 15.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          COD
+        </button>
+      </div>
+
+      <!-- UPI PANEL -->
+      <div id="panel-upi" class="method-panel active">
+        <p class="section-label">Choose UPI App</p>
+        <div class="upi-apps">
+          <button class="upi-app-btn active" onclick="selectUpiApp(this)" data-app="gpay">
+            <span class="upi-app-icon" style="background:#fff; padding:2px;">
+              <svg viewBox="0 0 48 48" width="20" height="20">
+                <path fill="#4285F4" d="M23.49 12.27c0-1.16-.1-2.27-.28-3.34H12v6.31h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.86c2.26-2.08 3.57-5.15 3.57-8.76z"/>
+                <path fill="#34A853" d="M12 24.5c3.24 0 5.95-1.07 7.93-2.9l-3.86-3c-1.07.72-2.44 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.3v3.1A11.99 11.99 0 0 0 12 24.5z"/>
+                <path fill="#FBBC05" d="M5.27 14.79A7.19 7.19 0 0 1 4.9 12.5c0-.8.14-1.57.37-2.29V7.11H1.3A11.99 11.99 0 0 0 0 12.5c0 1.93.46 3.76 1.3 5.39l3.97-3.1z"/>
+                <path fill="#EA4335" d="M12 5.04c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.94 1.45 15.23 0 12 0A11.99 11.99 0 0 0 1.3 7.11l3.97 3.1C6.22 7.16 8.87 5.04 12 5.04z"/>
+              </svg>
+            </span>
+            <span>Google Pay</span>
+          </button>
+          <button class="upi-app-btn" onclick="selectUpiApp(this)" data-app="phonepe">
+            <span class="upi-app-icon" style="background:#5f259f;">
+              <svg viewBox="0 0 48 48" width="20" height="20" fill="none">
+                <circle cx="24" cy="24" r="24" fill="#5f259f"/>
+                <path fill="#fff" d="M33.5 17.5c0-5.25-4.25-9.5-9.5-9.5S14.5 12.25 14.5 17.5v13h4v-5.5h5.5c5.25 0 9.5-4.25 9.5-9.5zm-9.5 5H18.5v-5c0-3.03 2.47-5.5 5.5-5.5s5.5 2.47 5.5 5.5-2.47 5-5.5 5z"/>
+                <path fill="#fff" d="M20.5 35.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+              </svg>
+            </span>
+            <span>PhonePe</span>
+          </button>
+          <button class="upi-app-btn" onclick="selectUpiApp(this)" data-app="paytm">
+            <span class="upi-app-icon" style="background:#002970;">
+              <svg viewBox="0 0 48 48" width="20" height="20" fill="none">
+                <rect width="48" height="48" rx="6" fill="#002970"/>
+                <circle cx="24" cy="24" r="14" fill="#00BAF2"/>
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" fill="#002970" font-size="10" font-weight="900" font-family="Arial">₹</text>
+              </svg>
+            </span>
+            <span>Paytm</span>
+          </button>
+          <button class="upi-app-btn" onclick="selectUpiApp(this)" data-app="bhim">
+            <span class="upi-app-icon" style="background:#fff; padding:1px;">
+              <svg viewBox="0 0 48 48" width="20" height="20" fill="none">
+                <rect width="48" height="48" rx="4" fill="#fff"/>
+                <rect x="3" y="3" width="42" height="13" rx="2" fill="#FF9933"/>
+                <rect x="3" y="16" width="42" height="16" fill="#fff"/>
+                <rect x="3" y="32" width="42" height="13" rx="2" fill="#138808"/>
+                <circle cx="24" cy="24" r="5" fill="none" stroke="#000080" stroke-width="1.5"/>
+                <text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" fill="#000080" font-size="5" font-weight="900" font-family="Arial">BHIM</text>
+              </svg>
+            </span>
+            <span>BHIM UPI</span>
+          </button>
+        </div>
+        <p class="section-label">Enter UPI ID</p>
+        <div class="input-group">
+          <input type="text" id="upiId" placeholder="yourname@upi" oninput="validateUpi(this)"/>
+          <span class="upi-status" id="upiStatus"></span>
+        </div>
+        <p class="upi-hint">e.g. mobilenumber@upi · name@okaxis · name@ybl</p>
+      </div>
+
+      <!-- CARD PANEL -->
+      <div id="panel-card" class="method-panel">
+        <p class="section-label">Card Details</p>
+        <div class="input-group">
+          <input type="text" id="cardName" placeholder="Cardholder Name" autocomplete="cc-name"/>
+          <svg class="field-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="input-group">
+          <input type="text" id="cardNumber" placeholder="Card Number" maxlength="19" oninput="formatCard(this)" autocomplete="cc-number"/>
+          <svg class="field-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        </div>
+        <div class="row-2">
+          <div class="input-group">
+            <input type="text" id="expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" autocomplete="cc-exp"/>
+          </div>
+          <div class="input-group">
+            <input type="password" id="cvv" placeholder="CVV" maxlength="4" autocomplete="cc-csc"/>
+            <svg class="field-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- COD PANEL -->
+      <div id="panel-cod" class="method-panel">
+        <div class="cod-unavailable">
+          <div class="cod-emoji">😔</div>
+          <h3 class="cod-title">Cash on Delivery Unavailable</h3>
+          <p class="cod-msg">Sorry, Cash on Delivery is currently not available for your area. Please choose another payment method to complete your order.</p>
+          <div class="cod-alternatives">
+            <span>Try instead:</span>
+            <button onclick="switchTo('upi')">📱 UPI</button>
+            <button onclick="switchTo('card')">💳 Card</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-pay" id="payBtn" onclick="handlePay()">
+        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>
+        Pay ₹444 Securely
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2025 Saravana & Co Papads — Both retail and wholesale traders &nbsp;|&nbsp;
+  <a href="#">Privacy Policy</a> &nbsp;|&nbsp;
+  <a href="#">Refund Policy</a> &nbsp;|&nbsp;
+  <a href="#">Contact</a>
+</footer>
+
+<script>
+  let currentMethod = 'upi';
+
+  function selectMethod(el) {
+    document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentMethod = el.dataset.method;
+    document.querySelectorAll('.method-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + currentMethod).classList.add('active');
+    const payBtn = document.getElementById('payBtn');
+    if (currentMethod === 'cod') {
+      payBtn.classList.add('hidden');
+    } else {
+      payBtn.classList.remove('hidden');
+      resetPayBtn();
+    }
+  }
+
+  function switchTo(method) {
+    const btn = document.querySelector('.pay-method[data-method="' + method + '"]');
+    if (btn) selectMethod(btn);
+  }
+
+  function selectUpiApp(el) {
+    document.querySelectorAll('.upi-app-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function validateUpi(input) {
+    const status = document.getElementById('upiStatus');
+    const val = input.value.trim();
+    if (!val) { status.textContent = ''; return; }
+    status.textContent = /^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(val) ? '✅' : '❌';
+  }
+
+  function formatCard(input) {
+    let val = input.value.replace(/\D/g,'').substring(0, 16);
+    input.value = val.match(/.{1,4}/g)?.join(' ') || val;
+  }
+
+  function formatExpiry(input) {
+    let val = input.value.replace(/\D/g,'');
+    if (val.length >= 2) val = val.substring(0,2) + ' / ' + val.substring(2,4);
+    input.value = val;
+  }
+
+  function resetPayBtn() {
+    const btn = document.getElementById('payBtn');
+    btn.style.cssText = '';
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg> Pay &#8377;444 Securely';
+    btn.disabled = false;
+  }
+
+  function handlePay() {
+    const btn = document.getElementById('payBtn');
+    btn.style.opacity = '0.7';
+    btn.innerHTML = 'Processing…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.style.background = 'linear-gradient(135deg, #2e7d32, #43a047)';
+      btn.style.color = '#fff';
+      btn.style.opacity = '1';
+      btn.innerHTML = '✓ Payment Successful!';
+    }, 1800);
+  }
+</script>
+</body>
+</html>
